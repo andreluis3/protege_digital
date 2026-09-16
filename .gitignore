@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# Django
+db.sqlite3
+staticfiles/
+media_cursos/*
+!media_cursos/videos/
+!media_cursos/videos/.gitkeep
+!media_cursos/pdfs/
+!media_cursos/pdfs/.gitkeep
+!media_cursos/capas/
+!media_cursos/capas/.gitkeep
+
+# Local settings and logs
+*.log
+.coverage
+htmlcov/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/

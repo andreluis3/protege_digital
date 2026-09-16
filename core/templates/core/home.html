@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Protege Digital - Educação em Segurança Digital{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "components/hero.html" %}
+
+<section class="section scams-section" aria-labelledby="scams-title">
+    <div class="container">
+        {% include "components/section_title.html" with eyebrow="Reconheça sinais de risco" title="Você saberia identificar um golpe?" description="Situações comuns podem chegar por mensagem, e-mail, redes sociais ou páginas que parecem legítimas." %}
+
+        <div class="scam-grid">
+            {% include "components/scam_card.html" with type="Situação 1 - WhatsApp" message="Oi, mãe. Troquei de número. Preciso que você faça um PIX pra mim." question="Você saberia o que fazer?" %}
+            {% include "components/scam_card.html" with type="Situação 2 - E-mail" message="Sua conta será bloqueada. Clique aqui para confirmar seus dados." question="Você clicaria?" %}
+            {% include "components/scam_card.html" with type="Situação 3 - Promoção" message="PARABÉNS! Você foi selecionado para receber um prêmio de R$ 5.000." question="Parece bom demais para ser verdade?" %}
+        </div>
+
+        <div class="learning-callout">
+            <p><strong>Os golpes podem aparecer em mensagens, e-mails, redes sociais e até em páginas que parecem legítimas.</strong></p>
+            <p>Aprender a reconhecer os sinais é uma das formas mais importantes de prevenção.</p>
+            <a class="btn btn-primary" href="#aprendizado">Quero aprender a identificar golpes</a>
+        </div>
+    </div>
+</section>
+
+<section class="section importance-section" aria-labelledby="importance-title">
+    <div class="container split-layout">
+        <div>
+            <p class="eyebrow">Por que isso importa?</p>
+            <h2 id="importance-title">Segurança digital também é inclusão digital.</h2>
+            <p>Quanto mais presente a tecnologia está em nossas vidas, maior é a importância de saber utilizá-la com segurança.</p>
+            <p>O Protege Digital conecta conhecimento prático, linguagem simples e acesso gratuito para ajudar a comunidade a tomar decisões mais seguras no ambiente online.</p>
+        </div>
+        <div class="usage-grid" aria-label="Áreas impactadas pela tecnologia">
+            <span>Comunicação</span>
+            <span>Estudos</span>
+            <span>Trabalho</span>
+            <span>Compras</span>
+            <span>Bancos</span>
+            <span>Redes sociais</span>
+        </div>
+    </div>
+</section>
+
+<section class="section video-section" aria-labelledby="video-title">
+    <div class="container video-grid">
+        <div class="video-placeholder" role="img" aria-label="Espaço reservado para vídeo de apresentação">
+            <span class="play-button" aria-hidden="true">▶</span>
+            <strong>Conheça o Protege Digital</strong>
+            <small>Área do vídeo</small>
+        </div>
+        <div>
+            <p class="eyebrow">Apresentação</p>
+            <h2 id="video-title">Por que o Protege Digital existe?</h2>
+            <p>O Protege Digital nasceu com o objetivo de tornar o conhecimento sobre segurança digital mais acessível, simples e prático para a comunidade.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="aprendizado" aria-labelledby="learn-title">
+    <div class="container">
+        {% include "components/section_title.html" with eyebrow="Conteúdos iniciais" title="O que você vai aprender" description="Uma trilha introdutória para proteger contas, dados, dispositivos e decisões online." %}
+
+        <div class="feature-grid">
+            {% include "components/feature_card.html" with icon="🔐" title="Proteção de contas" text="Aprenda a criar senhas mais seguras e proteger suas contas." %}
+            {% include "components/feature_card.html" with icon="🎣" title="Golpes e Phishing" text="Aprenda a identificar mensagens, links e páginas suspeitas." %}
+            {% include "components/feature_card.html" with icon="👤" title="Privacidade e dados" text="Entenda por que seus dados pessoais precisam ser protegidos." %}
+            {% include "components/feature_card.html" with icon="📱" title="Segurança no celular" text="Conheça boas práticas para proteger seus dispositivos." %}
+            {% include "components/feature_card.html" with icon="🔑" title="Autenticação em dois fatores" text="Aprenda como uma segunda camada pode aumentar a proteção das suas contas." %}
+            {% include "components/feature_card.html" with icon="🌐" title="Navegação segura" text="Aprenda a reconhecer riscos enquanto navega pela internet." %}
+        </div>
+    </div>
+</section>
+
+<section class="section course-flow-section" aria-labelledby="flow-title">
+    <div class="container">
+        {% include "components/section_title.html" with eyebrow="Experiência do curso" title="Como funciona o curso" description="A plataforma está preparada para crescer com aulas, materiais e atividades de aprendizagem." %}
+        <div class="flow-grid">
+            <article><span aria-hidden="true">🎥</span><h3>Videoaulas</h3><p>Aulas curtas e objetivas.</p></article>
+            <article><span aria-hidden="true">📄</span><h3>Materiais de revisão</h3><p>PDFs para consultar depois.</p></article>
+            <article><span aria-hidden="true">📝</span><h3>Atividades</h3><p>Coloque o conhecimento em prática.</p></article>
+            <article><span aria-hidden="true">🧠</span><h3>Quizzes</h3><p>Teste o que você aprendeu.</p></article>
+            <article><span aria-hidden="true">📊</span><h3>Progresso</h3><p>Acompanhe sua evolução.</p></article>
+        </div>
+    </div>
+</section>
+
+<section class="section journey-section" id="trilha" aria-labelledby="journey-title">
+    <div class="container">
+        {% include "components/section_title.html" with eyebrow="Trilha de aprendizagem" title="Sua jornada começa aqui" description="Os módulos abaixo são a base visual da trilha futura, que depois poderá ser alimentada pelo banco de dados." %}
+        <ol class="journey-list">
+            <li><span>01</span>Fundamentos da Segurança Digital</li>
+            <li><span>02</span>Golpes, Phishing e Engenharia Social</li>
+            <li><span>03</span>Senhas e Proteção de Contas</li>
+            <li><span>04</span>Segurança no Celular e Computador</li>
+            <li><span>05</span>Privacidade e Proteção de Dados</li>
+            <li><span>06</span>Navegação Segura</li>
+            <li><span>07</span>Desafio Final</li>
+        </ol>
+    </div>
+</section>
+
+<section class="section final-cta-section" aria-labelledby="final-cta-title">
+    <div class="container final-cta">
+        <h2 id="final-cta-title">Sua segurança começa com conhecimento.</h2>
+        <p>Você não precisa ser especialista em tecnologia para aprender a se proteger.</p>
+        <p>Comece sua jornada e aprenda práticas simples para navegar pela internet com mais segurança.</p>
+        <a class="btn btn-primary btn-large" href="{% url 'core:curso' %}">Começar o curso gratuitamente</a>
+    </div>
+</section>
+{% endblock %}
