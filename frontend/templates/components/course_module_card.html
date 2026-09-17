@@ -1,0 +1,21 @@
+<article class="module-card status-{{ module.status }}" id="module-{{ module.number }}">
+    <div class="module-card-header">
+        <span class="module-icon" aria-hidden="true">{{ module.icon }}</span>
+        <span class="module-status">{{ module.status_label }}</span>
+    </div>
+
+    <p class="module-number">Módulo {{ module.number }}</p>
+    <h3>{{ module.title }}</h3>
+    <p>{{ module.description }}</p>
+
+    <div class="module-meta">
+        <span>{{ module.lessons }} aula{% if module.lessons != 1 %}s{% endif %}</span>
+        <strong>{{ module.progress }}%</strong>
+    </div>
+
+    <div class="module-progress" aria-label="Progresso visual de {{ module.progress }}%">
+        <span style="--progress: {{ module.progress }}%;"></span>
+    </div>
+
+    <a href="#">Ver módulo →</a>
+</article>

@@ -1,13 +1,50 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}O Curso - Protege Digital{% endblock %}
+{% block title %}Meu Curso - Protege Digital{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course.css' %}">
+{% endblock %}
+
+{% block site_header %}{% endblock %}
+{% block site_footer %}{% endblock %}
 
 {% block content %}
-<section class="section page-placeholder">
-    <div class="container narrow">
-        <p class="eyebrow">Curso em preparação</p>
-        <h1>O curso</h1>
-        <p>A estrutura do curso será implementada futuramente com módulos, aulas, materiais e atividades.</p>
+<div class="course-page">
+    {% include "components/course_topbar.html" %}
+
+    <div class="course-layout">
+        {% include "components/course_sidebar.html" with modules=modules current_module=current_module %}
+
+        <section class="course-main" aria-labelledby="course-title">
+            <div class="course-welcome">
+                <p class="eyebrow">Minha plataforma</p>
+                <h1 id="course-title">Olá, André! 👋</h1>
+                <p>Continue sua jornada de aprendizado em segurança digital.</p>
+            </div>
+
+            <div class="course-dashboard">
+                {% include "components/course_progress.html" %}
+                {% include "components/course_continue_card.html" with current_module=current_module %}
+            </div>
+
+            <section class="course-content" aria-labelledby="modules-title">
+                <div class="course-section-heading">
+                    <div>
+                        <p class="eyebrow">Conteúdo do curso</p>
+                        <h2 id="modules-title">Módulos da trilha</h2>
+                    </div>
+                    <span>7 módulos</span>
+                </div>
+
+                <div class="module-grid">
+                    {% for module in modules %}
+                        {% include "components/course_module_card.html" with module=module %}
+                    {% endfor %}
+                </div>
+            </section>
+        </section>
     </div>
-</section>
+</div>
 {% endblock %}

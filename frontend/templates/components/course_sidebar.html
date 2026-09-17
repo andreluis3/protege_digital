@@ -1,0 +1,28 @@
+<aside class="course-sidebar" aria-label="Navegação do curso">
+    <div class="sidebar-brand">
+        <span class="brand-mark" aria-hidden="true">🛡️</span>
+        <strong>Protege Digital</strong>
+    </div>
+
+    <nav>
+        <p class="sidebar-title">📚 Meu curso</p>
+        <ul class="sidebar-list">
+            <li><a class="is-active" href="#conteudo">Início</a></li>
+            <li><a href="#modules-title">Meu progresso</a></li>
+        </ul>
+
+        <div class="sidebar-divider"></div>
+
+        <p class="sidebar-kicker">Módulos</p>
+        <ol class="sidebar-modules">
+            {% for module in modules %}
+                <li>
+                    <a class="{% if module.number == current_module.number %}is-active{% endif %}" href="#module-{{ module.number }}">
+                        <span>{{ module.number }}</span>
+                        <strong>{{ module.title }}</strong>
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
+    </nav>
+</aside>

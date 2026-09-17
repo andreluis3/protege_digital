@@ -1,13 +1,53 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Entrar - Protege Digital{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
+
 {% block content %}
-<section class="section page-placeholder">
-    <div class="container narrow">
-        <p class="eyebrow">Acesso futuro</p>
-        <h1>Entrar</h1>
-        <p>O sistema de autenticação será implementado em uma próxima etapa.</p>
+<section class="login-page section" aria-labelledby="login-title">
+    <div class="container login-container">
+        <div class="login-heading">
+            <a class="login-brand" href="{% url 'core:home' %}" aria-label="Protege Digital - Início">
+                <span class="brand-mark" aria-hidden="true">🛡️</span>
+                <span>Protege Digital</span>
+            </a>
+            <h1 id="login-title">Entre na sua conta</h1>
+            <p>Acesse sua jornada de aprendizado em segurança digital.</p>
+        </div>
+
+        <form class="login-card" action="{% url 'accounts:login' %}" method="post">
+            {% csrf_token %}
+
+            <div class="form-field">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="seu@email.com">
+            </div>
+
+            <div class="form-field">
+                <label for="password">Senha</label>
+                <div class="password-field">
+                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Digite sua senha">
+                    <button class="password-toggle" type="button" aria-label="Mostrar ou ocultar senha futuramente">Mostrar</button>
+                </div>
+            </div>
+
+            <div class="form-links">
+                <a href="#" aria-label="Recuperar senha futuramente">Esqueci minha senha</a>
+            </div>
+
+            <button class="btn btn-primary login-submit" type="submit">Entrar</button>
+
+            <div class="signup-callout">
+                <p>Ainda não tenho uma conta</p>
+                <a href="{% url 'accounts:cadastro' %}">Criar conta</a>
+            </div>
+        </form>
+
+        <a class="back-home" href="{% url 'core:home' %}">← Voltar para o início</a>
     </div>
 </section>
 {% endblock %}

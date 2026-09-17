@@ -18,10 +18,14 @@
 </head>
 <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    {% block site_header %}
     {% include "components/navbar.html" %}
+    {% endblock %}
     <main id="conteudo">
         {% block content %}{% endblock %}
     </main>
+    {% block site_footer %}
     {% include "components/footer.html" %}
+    {% endblock %}
 </body>
 </html>
