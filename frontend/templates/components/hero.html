@@ -1,8 +1,17 @@
+{% load static %}
 <section class="hero section">
     <div class="container hero-grid">
         <div class="hero-content">
             <p class="eyebrow">ODS 10 - Inclusão digital e segurança da informação</p>
-            <h1><span aria-hidden="true">🛡️</span> Protege Digital</h1>
+            <h1>
+                <img
+                    class="hero-logo"
+                    src="{% static 'assets/icons/shield_logo.png' %}"
+                    alt=""
+                    aria-hidden="true"
+                >
+                Protege Digital
+            </h1>
             <h2>Uma plataforma gratuita para você aprender a se proteger no mundo digital.</h2>
             <p class="hero-text">Aprenda de forma simples e gratuita como identificar golpes, proteger suas contas, cuidar dos seus dados e navegar pela internet com mais segurança.</p>
             <p class="hero-highlight"><strong>Antes de clicar, pense. Antes de confiar, verifique.</strong></p>
@@ -21,7 +30,12 @@
         <div class="hero-visual" aria-label="Ilustração de segurança digital">
             <div class="security-panel">
                 <div class="shield-orbit" aria-hidden="true">
-                    <span class="shield-core">🛡️</span>
+                    <img
+                    class="shield-core"
+                    src="{% static 'assets/icons/shield_logo.png' %}"
+                    alt=""
+                    aria-hidden="true"
+                >
                 </div>
                 <div class="security-status">
                     <span class="status-dot"></span>

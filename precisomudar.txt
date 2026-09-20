@@ -1,0 +1,106 @@
+preciso mudar esse simbolo horrivel da logo do shield no inico da home
+<span aria-hidden="true">🛡️</span> 
+ 
+ preciso mudar esse outro shield horroroso para colocar um simbolo de segurança digital 
+ preciso mudar isso 
+ <span class="shield-core">🛡️</span>
+ para isso -> 
+
+mudar a logo da pagina que está aqui como
+<a class="course-brand" href="/" aria-label="Protege Digital - Início">
+        <span class="brand-mark" aria-hidden="true">🛡️</span>
+        <span>Protege Digital</span>
+    </a>  
+<span class="brand-mark" aria-hidden="true">🛡️</span> 
+
+
+em módulos da trilha do curso eu preciso mudar um monte de cards 
+esses cards estao com muita cara de IA, preciso então criar cards horizontais que nao sao tao largos e em formato de lista 
+
+Conteúdo do curso
+
+Módulos da trilha
+trocar logo
+🛡️ -> usar icone de escudo em static/assets/icons/shield_logo.png 
+Em andamento
+Módulo 01
+
+Fundamentos da Segurança Digital
+Aprenda os conceitos básicos para começar a se proteger no mundo digital.
+
+3 aulas
+60%
+Ver módulo →
+🎣 -> trocar esse simbolo de pesquisa para static/assets/icons/cyber-criminal.png
+Não iniciado
+Módulo 02
+
+Golpes, Phishing e Engenharia Social
+Aprenda a identificar golpes, mensagens falsas e tentativas de manipulação.
+
+4 aulas
+0%
+Ver módulo →
+🔐 -> trocar esse simbolo para o icone static/assets/icons/password.png
+Não iniciado
+Módulo 03
+
+Senhas e Proteção de Contas
+Aprenda a criar senhas mais seguras e proteger suas contas.
+
+4 aulas
+0%
+Ver módulo →
+📱 -> mudar esse icone para o icone static/assets/icons/cellphone1.png
+Não iniciado
+Módulo 04
+
+Segurança no Celular e Computador
+Conheça práticas para manter seus dispositivos protegidos.
+
+4 aulas
+0%
+Ver módulo →
+👤 -> -> mudar esse icone para o icone static/assets/icons/protected.png
+Não iniciado
+Módulo 05
+Privacidade e Proteção de Dados
+Entenda como cuidar melhor das suas informações pessoais.
+
+3 aulas
+0%
+Ver módulo → 
+🌐 -> mudar esse icone para o icone static/assets/icons/websecurity.png
+Não iniciado
+Módulo 06
+
+Navegação Segura
+Aprenda a navegar pela internet de forma mais consciente e segura.
+
+3 aulas
+0%
+Ver módulo →
+🏆 -> mudar esse icone para o icone static/assets/icons/award.png
+Bloqueado
+Módulo 07
+
+Desafio Final
+Teste seus conhecimentos e coloque em prática o que aprendeu.
+
+1 aula
+0%
+
+
+
+
+
+
+
+
+ preciso colocar o final da página como desenvolvido por André Santos 
+ e tirar isso aqui 
+ Projeto de Extensão Universitária
+Engenharia da Computação 
+
+Preciso colocar meu email para contato -> andressluis33@gmail.com
+
