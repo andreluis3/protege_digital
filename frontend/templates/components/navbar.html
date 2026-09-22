@@ -1,8 +1,14 @@
+{% load static %}
 <header class="site-header" data-site-header>
     <nav class="navbar container" aria-label="Navegação principal">
-        <a class="brand" href="{% url 'core:home' %}" aria-label="Protege Digital - Início">
-            <span class="brand-mark" aria-hidden="true">🛡️</span>
-            <span>Protege Digital</span>
+        <a class="brand" href="{% url 'core:home' %}" aria-label="Proteção Digital - Início">
+            <img
+            class="brand-mark"
+            src="{% static 'assets/resources/icons/shield_logo.png' %}"
+            alt=""
+            aria-hidden="true"
+            >
+            <span>Proteção Digital</span>
         </a>
 
         <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-menu" data-nav-toggle>

@@ -1,31 +1,86 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Protege Digital: plataforma gratuita de educação em segurança digital.">
-    <title>{% block title %}Protege Digital{% endblock %}</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Proteção Digital: plataforma gratuita de educação em segurança digital."
+    >
+
+    <title>
+        {% block title %}Proteção Digital{% endblock %}
+    </title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/variables.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/components.css' %}"
+    >
+
     {% block extra_css %}{% endblock %}
-    <script src="{% static 'js/theme.js' %}" defer></script>
-    <script src="{% static 'js/main.js' %}" defer></script>
+
+    <script
+        src="{% static 'js/theme.js' %}"
+        defer
+    ></script>
+
+    <script
+        src="{% static 'js/main.js' %}"
+        defer
+    ></script>
 </head>
+
 <body>
-    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <a
+        class="skip-link"
+        href="#conteudo"
+    >
+        Pular para o conteúdo
+    </a>
+
     {% block site_header %}
-    {% include "components/navbar.html" %}
+        {% include "components/navbar.html" %}
     {% endblock %}
+
     <main id="conteudo">
         {% block content %}{% endblock %}
     </main>
+
     {% block site_footer %}
-    {% include "components/footer.html" %}
+        {% include "components/footer.html" %}
     {% endblock %}
+
 </body>
+
 </html>

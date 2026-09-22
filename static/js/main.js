@@ -28,3 +28,13 @@ window.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-progress]").forEach((element) => {
+        const progress = Number(element.dataset.progress);
+
+        if (!Number.isNaN(progress)) {
+            element.style.width = `${progress}%`;
+        }
+    });
+});

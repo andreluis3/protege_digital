@@ -31,7 +31,7 @@ Aprenda os conceitos básicos para começar a se proteger no mundo digital.
 3 aulas
 60%
 Ver módulo →
-🎣 -> trocar esse simbolo de pesquisa para static/assets/icons/cyber-criminal.png
+🎣 -> trocar esse simbolo de pesquisa para static/assets/resources/icons/cyber-criminal.png
 Não iniciado
 Módulo 02
 
@@ -41,7 +41,7 @@ Aprenda a identificar golpes, mensagens falsas e tentativas de manipulação.
 4 aulas
 0%
 Ver módulo →
-🔐 -> trocar esse simbolo para o icone static/assets/icons/password.png
+🔐 -> trocar esse simbolo para o icone static/assets/resources/icons/password.png
 Não iniciado
 Módulo 03
 
@@ -51,7 +51,7 @@ Aprenda a criar senhas mais seguras e proteger suas contas.
 4 aulas
 0%
 Ver módulo →
-📱 -> mudar esse icone para o icone static/assets/icons/cellphone1.png
+📱 -> mudar esse icone para o icone static/assets/resources/icons/cellphone1.png
 Não iniciado
 Módulo 04
 
@@ -61,7 +61,7 @@ Conheça práticas para manter seus dispositivos protegidos.
 4 aulas
 0%
 Ver módulo →
-👤 -> -> mudar esse icone para o icone static/assets/icons/protected.png
+👤 -> -> mudar esse icone para o icone static/assets/resources/sicons/protected.png
 Não iniciado
 Módulo 05
 Privacidade e Proteção de Dados
@@ -70,7 +70,7 @@ Entenda como cuidar melhor das suas informações pessoais.
 3 aulas
 0%
 Ver módulo → 
-🌐 -> mudar esse icone para o icone static/assets/icons/websecurity.png
+🌐 -> mudar esse icone para o icone static/assets/resources/icons/websecurity.png
 Não iniciado
 Módulo 06
 
@@ -80,7 +80,7 @@ Aprenda a navegar pela internet de forma mais consciente e segura.
 3 aulas
 0%
 Ver módulo →
-🏆 -> mudar esse icone para o icone static/assets/icons/award.png
+🏆 -> mudar esse icone para o icone static/assets/resources/icons/award.png
 Bloqueado
 Módulo 07
 

@@ -1,50 +1,187 @@
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block title %}Meu Curso - Protege Digital{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/course.css' %}">
+<link
+    rel="stylesheet"
+    href="{% static 'css/course.css' %}"
+>
 {% endblock %}
 
 {% block site_header %}{% endblock %}
+
 {% block site_footer %}{% endblock %}
 
 {% block content %}
+
 <div class="course-page">
+
     {% include "components/course_topbar.html" %}
 
     <div class="course-layout">
+
         {% include "components/course_sidebar.html" with modules=modules current_module=current_module %}
 
-        <section class="course-main" aria-labelledby="course-title">
+        <section
+            class="course-main"
+            aria-labelledby="course-title"
+        >
+
+            <!-- Cabeçalho -->
             <div class="course-welcome">
-                <p class="eyebrow">Minha plataforma</p>
-                <h1 id="course-title">Olá, André! 👋</h1>
-                <p>Continue sua jornada de aprendizado em segurança digital.</p>
+
+                <p class="eyebrow">
+                    Minha plataforma
+                </p>
+
+                <h1 id="course-title">
+                    Olá, André! 👋
+                </h1>
+
+                <p>
+                    Continue sua jornada de aprendizado em segurança digital.
+                </p>
+
             </div>
 
+
+            <!-- Dashboard -->
             <div class="course-dashboard">
+
                 {% include "components/course_progress.html" %}
-                {% include "components/course_continue_card.html" with current_module=current_module %}
+
+                {% include "components/course_continue_card.html"
+                    with current_module=current_module
+                %}
+
             </div>
 
-            <section class="course-content" aria-labelledby="modules-title">
+
+            <!-- Módulos -->
+            <section
+                class="course-content"
+                aria-labelledby="modules-title"
+            >
+
                 <div class="course-section-heading">
+
                     <div>
-                        <p class="eyebrow">Conteúdo do curso</p>
-                        <h2 id="modules-title">Módulos da trilha</h2>
+
+                        <p class="eyebrow">
+                            Conteúdo do curso
+                        </p>
+
+                        <h2 id="modules-title">
+                            Módulos da trilha
+                        </h2>
+
                     </div>
-                    <span>7 módulos</span>
+
+                    <span>
+                        {{ modules|length }} módulos
+                    </span>
+
                 </div>
 
-                <div class="module-grid">
+
+                <div class="course-modules">
+
                     {% for module in modules %}
-                        {% include "components/course_module_card.html" with module=module %}
+
+                        <article class="course-module course-module--{{ module.status }}">
+
+                            <div class="course-module__number">
+                                {{ module.number }}
+                            </div>
+
+                            <div class="course-module__icon">
+                                <img
+                                    src="{% static module.icon %}"
+                                    alt=""
+                                    loading="lazy"
+                                >
+                            </div>
+
+                            <div class="course-module__content">
+
+                                <div class="course-module__top">
+                                    <div>
+                                        <span class="course-module__label">
+                                            Módulo {{ module.number }}
+                                        </span>
+                                        <h3>{{ module.title }}</h3>
+                                        <p>{{ module.description }}</p>
+                                    </div>
+
+                                    <span class="course-module__status">
+                                        {{ module.status_label }}
+                                    </span>
+                                </div>
+
+                                <div class="course-module__bottom">
+                                    <div class="course-module__progress">
+                                        <div class="course-module__meta">
+                                            <span>{{ module.lessons }} aulas</span>
+                                            <span>{{ module.progress }}%</span>
+                                        </div>
+
+                                        <div
+                                            class="course-module__progress-bar"
+                                            role="progressbar"
+                                            aria-valuenow="{{ module.progress }}"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                            aria-label="Progresso do módulo {{ module.number }}"
+                                        >
+                                            <span
+                                                class="course-module__progress-fill"
+                                                style="width: {{ module.progress }}%"
+                                            ></span>
+                                        </div>
+                                    </div>
+
+                                    {% if module.status == "locked" %}
+                                        <button
+                                            type="button"
+                                            class="course-module__action"
+                                            disabled
+                                        >
+                                            Bloqueado
+                                        </button>
+                                    {% else %}
+                                        <a
+                                            href="{% url 'core:curso' %}"
+                                            class="course-module__action"
+                                        >
+                                            Ver módulo
+                                            <span aria-hidden="true">→</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        </article>
+
+                    {% empty %}
+
+                        <div class="course-empty">
+                            <h3>Nenhum módulo disponível</h3>
+                            <p>Os módulos do curso ainda não foram cadastrados.</p>
+                        </div>
+
                     {% endfor %}
+
                 </div>
+
             </section>
+
         </section>
+
     </div>
+
 </div>
+
 {% endblock %}

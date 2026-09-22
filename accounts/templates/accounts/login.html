@@ -11,9 +11,14 @@
 <section class="login-page section" aria-labelledby="login-title">
     <div class="container login-container">
         <div class="login-heading">
-            <a class="login-brand" href="{% url 'core:home' %}" aria-label="Protege Digital - Início">
-                <span class="brand-mark" aria-hidden="true">🛡️</span>
-                <span>Protege Digital</span>
+            <a class="login-brand" href="{% url 'core:home' %}" aria-label="Proteção Digital - Início">
+                <img
+                    class="brand-mark"
+                    src="{% static 'assets/resources/icons/shield_logo.png' %}"
+                    alt=""
+                    aria-hidden="true"
+                >
+                <span>Proteção Digital</span>
             </a>
             <h1 id="login-title">Entre na sua conta</h1>
             <p>Acesse sua jornada de aprendizado em segurança digital.</p>
