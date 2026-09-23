@@ -45,13 +45,15 @@
                     Continue sua jornada de aprendizado em segurança digital.
                 </p>
 
+                {% include "components/course_stats.html" with stats=stats %}
+
             </div>
 
 
             <!-- Dashboard -->
             <div class="course-dashboard">
 
-                {% include "components/course_progress.html" %}
+                {% include "components/course_progress.html" with current_module=current_module %}
 
                 {% include "components/course_continue_card.html"
                     with current_module=current_module
@@ -91,7 +93,10 @@
 
                     {% for module in modules %}
 
-                        <article class="course-module course-module--{{ module.status }}">
+                        <article
+                            class="course-module course-module--{{ module.status }}"
+                            id="module-{{ module.number }}"
+                        >
 
                             <div class="course-module__number">
                                 {{ module.number }}
@@ -152,8 +157,9 @@
                                             Bloqueado
                                         </button>
                                     {% else %}
-                                        <a
-                                            href="{% url 'core:curso' %}"
+                                        {# TODO: quando existir página de aula dedicada, trocar o href abaixo pela URL real usando module.slug #}
+                                        
+                                            href="{% url 'core:curso' %}#module-{{ module.number }}"
                                             class="course-module__action"
                                         >
                                             Ver módulo
