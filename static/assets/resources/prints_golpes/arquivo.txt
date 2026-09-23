@@ -1,0 +1,15 @@
+ 
+ 
+ ordem do processo de introduzir imagens no threat gallery 
+
+ . Imagens → static/assets/resources/prints_golpes/
+Vocês já têm pix_zap.png e golpe_banco.png em static/assets/resources/prints_golpes/ — 
+já ajustei o threat_gallery.html pra usar essas duas nas 2 primeiras molduras. 
+Faltam 6 imagens novas nessa mesma pasta com os nomes:
+ 
+ premio-falso.png,
+  vaga-emprego-falsa.png,
+   central-cartao-falsa.png,
+    loja-falsa-desconto.png,
+     entrega-falsa.png,
+      credenciais-corporativas.png.

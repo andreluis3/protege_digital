@@ -1,0 +1,56 @@
+{% load static %}
+
+<section
+    class="section journey-cta-section"
+    aria-labelledby="journey-cta-title"
+>
+
+    <h2 id="journey-cta-title" class="sr-only">
+        Comece sua jornada
+    </h2>
+
+    <div class="container journey-cta">
+
+        <div class="journey-cta__actions">
+
+            <a
+                href="{% url 'core:curso' %}"
+                class="btn btn-primary btn-large"
+            >
+                Começar minha jornada
+            </a>
+
+            <a
+                href="#aprendizado"
+                class="btn btn-secondary btn-large"
+            >
+                Conhecer o curso
+            </a>
+
+        </div>
+
+        <ul
+            class="journey-cta__benefits"
+            aria-label="Benefícios do curso"
+        >
+
+            <li>
+                <span class="journey-cta__icon" aria-hidden="true">🎓</span>
+                <span>Curso gratuito</span>
+            </li>
+
+            <li>
+                <span class="journey-cta__icon" aria-hidden="true">🎥</span>
+                <span>Videoaulas</span>
+            </li>
+
+            <li>
+                <span class="journey-cta__icon" aria-hidden="true">📄</span>
+                <span>Materiais em PDF</span>
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>

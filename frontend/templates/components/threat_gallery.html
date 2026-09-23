@@ -1,0 +1,110 @@
+{% load static %}
+
+<section
+    class="section threat-gallery-section"
+    aria-labelledby="threat-gallery-title"
+>
+
+    <div class="container">
+
+        {% include "components/section_title.html"
+            with eyebrow="Galeria de ameaças"
+            title="Reconheça os golpes antes que aconteçam"
+            description="Todos os dias, milhares de pessoas recebem mensagens falsas tentando roubar dinheiro ou informações pessoais. Aprenda a identificar os sinais de alerta."
+        %}
+
+        {# ==========================================================
+           Cada <figure> abaixo é um espaço preparado para receber um
+           print realista de celular (golpe correspondente). As imagens
+           ficam em static/assets/resources/prints_golpes/. Para trocar,
+           basta substituir o arquivo mantendo o mesmo nome, ou ajustar
+           o caminho no atributo src.
+        ========================================================== #}
+
+        <div class="threat-gallery">
+
+            <figure class="threat-frame" data-threat="familiar-falso">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/pix_zap.png' %}"
+                        alt="Print simulando golpe do falso familiar pedindo PIX no WhatsApp"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+            <figure class="threat-frame" data-threat="phishing-bancario">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/golpe_banco.png' %}"
+                        alt="Print simulando e-mail ou mensagem de phishing bancário"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+            <figure class="threat-frame" data-threat="premio-falso">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/premio-falso.png' %}"
+                        alt="Print simulando mensagem de prêmio falso"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+            <figure class="threat-frame" data-threat="vaga-emprego-falsa">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/vaga-emprego-falsa.png' %}"
+                        alt="Print simulando falsa oportunidade de emprego"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+            <figure class="threat-frame" data-threat="central-cartao-falsa">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/central-cartao-falsa.png' %}"
+                        alt="Print simulando ligação de falsa central de cartão"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+            <figure class="threat-frame" data-threat="loja-falsa-desconto">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/loja-falsa-desconto.png' %}"
+                        alt="Print simulando loja falsa com desconto agressivo"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+            <figure class="threat-frame" data-threat="entrega-falsa">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/entrega-falsa.png' %}"
+                        alt="Print simulando golpe da falsa entrega"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+            <figure class="threat-frame" data-threat="credenciais-corporativas">
+                <div class="threat-frame__screen">
+                    <img
+                        src="{% static 'assets/resources/prints_golpes/credenciais-corporativas.png' %}"
+                        alt="Print simulando roubo de credenciais corporativas"
+                        loading="lazy"
+                    >
+                </div>
+            </figure>
+
+        </div>
+
+    </div>
+
+</section>

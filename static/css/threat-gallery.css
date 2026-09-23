@@ -1,0 +1,151 @@
+/* =========================================================
+   CTA DE JORNADA (botões + benefícios)
+========================================================== */
+
+.journey-cta-section {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+
+.journey-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+}
+
+.journey-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.journey-cta__benefits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem 2.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.journey-cta__benefits li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #94a3b8);
+}
+
+.journey-cta__icon {
+    font-size: 1.25rem;
+}
+
+
+/* =========================================================
+   GALERIA DE AMEAÇAS (mosaico de prints de celular)
+========================================================== */
+
+.threat-gallery-section {
+    padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.threat-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.threat-frame {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    margin: 0;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: linear-gradient(
+        160deg,
+        var(--color-surface, #111c31),
+        var(--color-surface-alt, #0b1425)
+    );
+    border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+    box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.55);
+
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    transition-delay: calc(var(--stagger, 0) * 70ms);
+}
+
+.threat-frame.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.threat-frame:hover,
+.threat-frame:focus-within {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 40px -14px rgba(37, 99, 235, 0.45);
+    border-color: var(--color-primary, #2563eb);
+}
+
+.threat-frame__screen {
+    position: absolute;
+    inset: 0;
+}
+
+.threat-frame__screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Efeito de mosaico: alguns quadros ganham mais destaque/tamanho */
+.threat-frame:nth-child(1),
+.threat-frame:nth-child(6) {
+    grid-row: span 2;
+}
+
+.threat-frame:nth-child(4) {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10;
+}
+
+@media (max-width: 1024px) {
+    .threat-gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .threat-frame:nth-child(4) {
+        grid-column: span 1;
+        aspect-ratio: 9 / 16;
+    }
+}
+
+@media (max-width: 720px) {
+    .threat-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .threat-frame:nth-child(1),
+    .threat-frame:nth-child(6) {
+        grid-row: span 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .threat-frame {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
+}

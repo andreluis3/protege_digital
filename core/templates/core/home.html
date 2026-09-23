@@ -11,11 +11,36 @@
         rel="stylesheet"
         href="{% static 'css/home.css' %}"
     >
+    <link
+        rel="stylesheet"
+        href="{% static 'css/threat-gallery.css' %}"
+    >
+{% endblock %}
+
+{% block extra_js %}
+    <script
+        src="{% static 'js/threat-gallery.js' %}"
+        defer
+    ></script>
 {% endblock %}
 
 {% block content %}
 
     {% include "components/hero.html" %}
+
+
+    <!-- =========================================================
+         CTA DE JORNADA (botões + benefícios)
+    ========================================================== -->
+
+    {% include "components/journey_cta.html" %}
+
+
+    <!-- =========================================================
+         GALERIA DE AMEAÇAS (mosaico de prints reais)
+    ========================================================== -->
+
+    {% include "components/threat_gallery.html" %}
 
 
     <!-- =========================================================
