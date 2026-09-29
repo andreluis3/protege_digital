@@ -1,7 +1,7 @@
 <article class="continue-card" id="continue-card" aria-labelledby="continue-title">
     <p class="eyebrow">Continue de onde parou</p>
     <span class="lesson-module">Módulo {{ current_module.number }}</span>
-    <h2 id="continue-title">Aula 2 — Por que a segurança digital é importante?</h2>
-    <p>Retome a próxima aula da trilha introdutória e avance no seu ritmo.</p>
-    <a class="btn btn-secondary" href="#">Continuar aula →</a>
+    <h2 id="continue-title">Retome sua próxima aula</h2>
+    <p>Volte para a trilha e avance no seu ritmo.</p>
+    <a class="btn btn-secondary" href="{% if current_module.number %}{% url 'core:player' current_module.number 1 %}{% else %}#modules-title{% endif %}">Continuar aula →</a>
 </article>

@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ lesson.title }} - Módulo {{ module.number }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course.css' %}">
+<style>
+    .pl-page { background: #000; color: #e2e8f0; padding: 32px 0 80px; min-height: 80vh; }
+    .pl-wrap { width: min(1280px, 94%); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+    .pl-back { display: inline-block; margin: 0 0 16px; color: #60a5fa; font-weight: 700; text-decoration: none; }
+    .pl-back:hover { text-decoration: underline; }
+    .pl-crumb { margin: 0 0 8px; color: #60a5fa; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .pl-title { margin: 0 0 16px; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; color: #fff; }
+    .pl-video { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px; background: #050b1a; border: 1px solid rgba(59, 130, 246, .35); box-shadow: 0 0 40px rgba(37, 99, 235, .2); }
+    .pl-video video { width: 100%; height: 100%; display: block; background: #000; }
+    .pl-empty { display: grid; place-items: center; height: 100%; text-align: center; color: #94a3b8; padding: 24px; }
+    .pl-hint { margin: 10px 0 0; color: #64748b; font-size: .8rem; }
+    .pl-nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 28px; }
+    .pl-btn { display: inline-flex; align-items: center; padding: 12px 22px; border-radius: 12px; border: 1px solid rgba(148, 163, 184, .35); background: rgba(15, 23, 42, .7); color: #e2e8f0; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform .2s, border-color .2s; }
+    .pl-btn:hover { transform: translateY(-2px); border-color: #3b82f6; }
+    .pl-btn.is-disabled { opacity: .35; pointer-events: none; }
+    .pl-btn-done { background: #2563eb; border-color: #2563eb; color: #fff; box-shadow: 0 0 20px rgba(37, 99, 235, .5); }
+    .pl-btn-done.is-done { background: #16a34a; border-color: #16a34a; box-shadow: 0 0 20px rgba(22, 163, 74, .45); }
+    .pl-info { padding: 24px; border-radius: 16px; background: rgba(15, 23, 42, .65); border: 1px solid rgba(148, 163, 184, .18); }
+    .pl-info h2 { margin: 0 0 10px; font-size: 1.15rem; color: #fff; }
+    .pl-info p { margin: 0 0 16px; line-height: 1.7; color: #cbd5e1; }
+    .pl-pdf { color: #60a5fa; font-weight: 700; }
+    .pl-side { position: sticky; top: 24px; padding: 20px; border-radius: 16px; background: rgba(15, 23, 42, .75); border: 1px solid rgba(59, 130, 246, .3); }
+    .pl-side h2 { margin: 0 0 4px; font-size: 1rem; color: #fff; }
+    .pl-progress { margin: 0 0 14px; color: #94a3b8; font-size: .85rem; }
+    .pl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+    .pl-list a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; border: 1px solid transparent; color: #cbd5e1; text-decoration: none; font-weight: 600; font-size: .92rem; }
+    .pl-list a:hover { background: rgba(37, 99, 235, .12); }
+    .pl-list a.is-current { background: rgba(37, 99, 235, .2); border-color: #3b82f6; color: #fff; }
+    .pl-icon { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #475569; font-size: .7rem; color: #475569; }
+    .pl-list a.is-current .pl-icon { border-color: #3b82f6; color: #3b82f6; }
+    .pl-list a.is-done .pl-icon { background: #16a34a; border-color: #16a34a; color: #fff; }
+    @media (max-width: 960px) {
+        .pl-wrap { grid-template-columns: 1fr; }
+        .pl-side { position: static; }
+    }
+</style>
+{% endblock %}
+
+{% block site_header %}{% endblock %}
+
+{% block site_footer %}{% endblock %}
+
+{% block content %}
+
+{% include "components/course_topbar.html" %}
+
+<section class="pl-page">
+    <div class="pl-wrap">
+
+        <div>
+            <a class="pl-back" href="{% url 'core:curso' %}">← Voltar ao curso</a>
+
+            <p class="pl-crumb">Módulo {{ module.number }} · {{ module.title }}</p>
+            <h1 class="pl-title">{{ lesson.title }}</h1>
+
+            <div class="pl-video">
+                {% if lesson.video %}
+                    <video id="pl-video" controls preload="metadata" playsinline>
+                        <source src="{% static lesson.video %}" type="video/mp4">
+                    </video>
+                {% else %}
+                    <div class="pl-empty"><p>Vídeo em breve.</p></div>
+                {% endif %}
+            </div>
+            <p class="pl-hint">Atalhos: ← e → voltam/avançam 10s · Espaço play/pause · F tela cheia · M mudo</p>
+
+            <div class="pl-nav">
+                {% if prev_number %}
+                    <a class="pl-btn" href="{% url 'core:player' module.number prev_number %}">← Aula anterior</a>
+                {% else %}
+                    <span class="pl-btn is-disabled">← Aula anterior</span>
+                {% endif %}
+
+                <button class="pl-btn pl-btn-done" id="pl-done" type="button">Marcar como concluída</button>
+
+                {% if next_number %}
+                    <a class="pl-btn" href="{% url 'core:player' module.number next_number %}">Próxima aula →</a>
+                {% else %}
+                    <span class="pl-btn is-disabled">Próxima aula →</span>
+                {% endif %}
+            </div>
+
+            <div class="pl-info">
+                <h2>Sobre esta aula</h2>
+                <p>{{ lesson.summary }}</p>
+                {% if lesson.pdf %}
+                    <a class="pl-pdf" href="{% static lesson.pdf %}" download>📄 Baixar material de apoio (PDF)</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <aside class="pl-side" aria-label="Aulas do módulo">
+            <h2>Aulas do módulo</h2>
+            <p class="pl-progress" id="pl-progress"></p>
+            <ol class="pl-list">
+                {% for l in lessons %}
+                    <li>
+                        <a
+                            href="{% url 'core:player' module.number forloop.counter %}"
+                            data-lesson-item="{{ forloop.counter }}"
+                            class="{% if forloop.counter == lesson_number %}is-current{% endif %}"
+                        >
+                            <span class="pl-icon" aria-hidden="true">{% if forloop.counter == lesson_number %}▶{% else %}○{% endif %}</span>
+                            <span>{{ l.title }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </aside>
+
+    </div>
+</section>
+
+<div
+    id="pl-data"
+    hidden
+    data-module="{{ module.number }}"
+    data-current-lesson="{{ lesson_number }}"
+    data-total="{{ lessons|length }}"
+></div>
+
+<script>
+(function () {
+    var data = document.getElementById("pl-data").dataset;
+    var M = Number(data.module);
+    var L = Number(data.currentLesson);
+    var TOTAL = Number(data.total);
+    var KEY = "pd:progress";
+    var video = document.getElementById("pl-video");
+    var btn = document.getElementById("pl-done");
+
+    function load() {
+        try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+    }
+
+    function save(d) {
+        try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
+    }
+
+    function id(n) { return "m" + M + "-l" + n; }
+
+    function render() {
+        var d = load();
+        var done = 0;
+
+        document.querySelectorAll("[data-lesson-item]").forEach(function (a) {
+            var n = Number(a.dataset.lessonItem);
+            var ok = d[id(n)] && d[id(n)].done;
+            var icon = a.querySelector(".pl-icon");
+            a.classList.toggle("is-done", !!ok);
+            if (ok) {
+                done++;
+                icon.textContent = "✓";
+            } else {
+                icon.textContent = (n === L) ? "▶" : "○";
+            }
+        });
+
+        document.getElementById("pl-progress").textContent = done + " de " + TOTAL + " concluídas";
+
+        var cur = d[id(L)] && d[id(L)].done;
+        btn.classList.toggle("is-done", !!cur);
+        btn.textContent = cur ? "✓ Aula concluída" : "Marcar como concluída";
+    }
+
+    function setDone(v) {
+        var d = load();
+        d[id(L)] = d[id(L)] || {};
+        d[id(L)].done = v;
+        save(d);
+        render();
+    }
+
+    btn.addEventListener("click", function () {
+        var d = load();
+        setDone(!(d[id(L)] && d[id(L)].done));
+    });
+
+    if (video) {
+        var last = 0;
+
+        video.addEventListener("loadedmetadata", function () {
+            var d = load();
+            var t = d[id(L)] && d[id(L)].time;
+            if (t && t < video.duration - 5) { video.currentTime = t; }
+        });
+
+        video.addEventListener("timeupdate", function () {
+            if (Date.now() - last < 4000) { return; }
+            last = Date.now();
+            var d = load();
+            d[id(L)] = d[id(L)] || {};
+            d[id(L)].time = video.currentTime;
+            save(d);
+        });
+
+        video.addEventListener("ended", function () { setDone(true); });
+
+        document.addEventListener("keydown", function (e) {
+            if (/INPUT|TEXTAREA/.test(e.target.tagName)) { return; }
+            var k = e.key.toLowerCase();
+            if (k === "arrowright") {
+                video.currentTime += 10;
+            } else if (k === "arrowleft") {
+                video.currentTime -= 10;
+            } else if (k === " ") {
+                e.preventDefault();
+                if (video.paused) { video.play(); } else { video.pause(); }
+            } else if (k === "f") {
+                if (document.fullscreenElement) { document.exitFullscreen(); } else { video.requestFullscreen(); }
+            } else if (k === "m") {
+                video.muted = !video.muted;
+            }
+        });
+    }
+
+    render();
+})();
+</script>
+
+{% endblock %}

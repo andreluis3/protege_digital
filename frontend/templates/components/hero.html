@@ -1,29 +1,228 @@
 {% load static %}
-<section class="hero">
-    <div class="container hero-grid">
+<style>
+    .hx-hero {
+        position: relative;
+        overflow: hidden;
+        background: #000;
+        color: #fff;
+        padding: 96px 0 88px;
+    }
 
-        <div class="hero-content">
-            <p class="eyebrow">ODS 10 · Inclusão digital e segurança da informação</p>
+    .hx-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
 
-            <h1 class="hero-title">Proteção<br>Digital</h1>
+    .hx-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(ellipse at 25% 50%, rgba(0, 0, 0, .75) 0%, rgba(0, 0, 0, 0) 65%),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, #000 100%);
+    }
 
-            <p class="hero-subtitle">
-                Uma plataforma gratuita para você aprender a se proteger no mundo digital.
-            </p>
+    .hx-wrap {
+        position: relative;
+        z-index: 2;
+        width: min(1180px, 92%);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 40px;
+        align-items: center;
+    }
 
-            <p class="hero-text">
+    .hx-badge {
+        display: inline-block;
+        padding: 8px 14px;
+        margin: 0 0 20px;
+        border: 1px solid rgba(59, 130, 246, .5);
+        border-radius: 999px;
+        background: rgba(37, 99, 235, .12);
+        color: #60a5fa;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        text-shadow: 0 0 12px rgba(59, 130, 246, .7);
+        box-shadow: 0 0 18px rgba(37, 99, 235, .25);
+    }
+
+    .hx-title {
+        margin: 0 0 20px;
+        font-size: clamp(3rem, 7vw, 5.5rem);
+        line-height: 1.02;
+        font-weight: 800;
+        letter-spacing: -.02em;
+        background: linear-gradient(90deg, #fff 0%, #dbeafe 45%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .hx-subtitle {
+        margin: 0 0 14px;
+        max-width: 34ch;
+        font-size: clamp(1.15rem, 2vw, 1.5rem);
+        font-weight: 700;
+        line-height: 1.3;
+        color: #f1f5f9;
+    }
+
+    .hx-text {
+        margin: 0 0 22px;
+        max-width: 52ch;
+        font-size: 1.02rem;
+        line-height: 1.65;
+        color: #94a3b8;
+    }
+
+    .hx-alert {
+        display: inline-block;
+        margin: 0 0 28px;
+        padding: 12px 18px;
+        border-left: 4px solid #3b82f6;
+        border-radius: 0 10px 10px 0;
+        background: rgba(37, 99, 235, .14);
+        color: #fff;
+        font-weight: 700;
+    }
+
+    .hx-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .hx-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .hx-btn-primary {
+        background: #2563eb;
+        color: #fff;
+        box-shadow: 0 0 24px rgba(37, 99, 235, .55);
+    }
+
+    .hx-btn-primary:hover {
+        transform: translateY(-2px);
+        background: #3b82f6;
+        box-shadow: 0 0 32px rgba(59, 130, 246, .75);
+    }
+
+    .hx-btn-ghost {
+        border: 1px solid rgba(148, 163, 184, .4);
+        color: #e2e8f0;
+        background: rgba(15, 23, 42, .5);
+    }
+
+    .hx-btn-ghost:hover {
+        transform: translateY(-2px);
+        border-color: #3b82f6;
+        color: #fff;
+    }
+
+    .hx-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .hx-tags li {
+        padding: 7px 14px;
+        border: 1px solid rgba(148, 163, 184, .25);
+        border-radius: 999px;
+        background: rgba(15, 23, 42, .7);
+        color: #cbd5e1;
+        font-size: .85rem;
+        font-weight: 600;
+    }
+
+    .hx-tags li::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 8px;
+        border-radius: 50%;
+        background: #3b82f6;
+        box-shadow: 0 0 8px #3b82f6;
+        vertical-align: middle;
+    }
+
+    .hx-visual {
+        display: flex;
+        justify-content: center;
+    }
+
+    .hx-visual img {
+        display: block;
+        width: 100%;
+        max-width: 640px;
+        height: auto;
+        filter: drop-shadow(0 0 28px rgba(37, 99, 235, .6)) drop-shadow(0 0 60px rgba(59, 130, 246, .35));
+        animation: hx-float 6s ease-in-out infinite;
+    }
+
+    @keyframes hx-float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @media (max-width: 900px) {
+        .hx-wrap { grid-template-columns: 1fr; }
+        .hx-visual { order: -1; }
+        .hx-visual img { max-width: 480px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hx-visual img { animation: none; }
+    }
+</style>
+
+<section class="hx-hero" id="inicio">
+
+    <canvas class="hx-canvas" id="hx-squares" aria-hidden="true"></canvas>
+
+    <div class="hx-wrap">
+
+        <div class="hx-content">
+            <p class="hx-badge">ODS 10 - Inclusão digital e segurança da informação</p>
+
+            <h1 class="hx-title">Proteção Digital</h1>
+
+            <p class="hx-subtitle">Uma plataforma gratuita para você aprender a se proteger no mundo digital.</p>
+
+            <p class="hx-text">
                 Aprenda de forma simples como identificar golpes, proteger suas contas,
                 cuidar dos seus dados e navegar pela internet com mais segurança.
             </p>
 
-            <p class="hero-alert">Antes de clicar, pense. Antes de confiar, verifique.</p>
+            <p class="hx-alert">Antes de clicar, pense. Antes de confiar, verifique.</p>
 
-            <div class="hero-actions">
-                <a class="btn btn-hero-primary" href="{% url 'core:curso' %}">Começar minha jornada</a>
-                <a class="btn btn-hero-ghost" href="#trilha">Conhecer o curso</a>
+            <div class="hx-actions">
+                <a class="hx-btn hx-btn-primary" href="{% url 'core:curso' %}">Começar minha jornada</a>
+                <a class="hx-btn hx-btn-ghost" href="#trilha">Conhecer o curso</a>
             </div>
 
-            <ul class="hero-badges" aria-label="Recursos do curso">
+            <ul class="hx-tags" aria-label="Recursos do curso">
                 <li>Curso gratuito</li>
                 <li>Videoaulas</li>
                 <li>Materiais em PDF</li>
@@ -31,29 +230,114 @@
             </ul>
         </div>
 
-        <div class="hero-visual" aria-hidden="true">
-            <img class="hero-watermark" src="{% static 'assets/resources/icons/shield_logo.png' %}" alt="">
-
-            <div class="iso-stage">
-                <div class="iso-card iso-card-1">
-                    <span class="iso-icon">🔑</span>
-                    <strong>Auditoria de Senhas</strong>
-                </div>
-                <div class="iso-card iso-card-2">
-                    <span class="iso-icon">🧱</span>
-                    <strong>Segurança de Rede</strong>
-                    <em class="iso-status">● ativo</em>
-                </div>
-                <div class="iso-card iso-card-3">
-                    <span class="iso-icon">🎣</span>
-                    <strong>Defesa contra Phishing</strong>
-                </div>
-                <div class="iso-card iso-card-4">
-                    <span class="iso-icon">🗄️</span>
-                    <strong>Proteção de Dados</strong>
-                </div>
-            </div>
+        <div class="hx-visual">
+            <img
+                src="{% static 'assets/resources/prints_golpes/cibernetic_hero.png' %}"
+                alt="Cúpula de proteção digital com auditoria de senhas, segurança de rede, proteção de dados e defesa contra phishing"
+            >
         </div>
 
     </div>
 </section>
+
+<script>
+    (function () {
+        var canvas = document.getElementById("hx-squares");
+        if (!canvas) return;
+
+        var ctx = canvas.getContext("2d");
+        var CFG = {
+            size: 44,
+            gridColor: "#0f172a",
+            borderColor: "#1e293b",
+            flickerColor: "#3b82f6",
+            speed: 0.6
+        };
+
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var cols = 0, rows = 0, cells = [], w = 0, h = 0, last = 0, raf = null;
+
+        function resize() {
+            var box = canvas.parentElement.getBoundingClientRect();
+            var dpr = window.devicePixelRatio || 1;
+            w = box.width;
+            h = box.height;
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            cols = Math.ceil(w / CFG.size);
+            rows = Math.ceil(h / CFG.size);
+            cells = new Array(cols * rows).fill(0);
+            draw();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = CFG.gridColor;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = CFG.flickerColor;
+            for (var i = 0; i < cells.length; i++) {
+                if (cells[i] > 0.01) {
+                    ctx.globalAlpha = cells[i] * 0.55;
+                    ctx.fillRect((i % cols) * CFG.size, Math.floor(i / cols) * CFG.size, CFG.size, CFG.size);
+                }
+            }
+            ctx.globalAlpha = 1;
+
+            ctx.strokeStyle = CFG.borderColor;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for (var x = 0; x <= cols; x++) {
+                ctx.moveTo(x * CFG.size + .5, 0);
+                ctx.lineTo(x * CFG.size + .5, h);
+            }
+            for (var y = 0; y <= rows; y++) {
+                ctx.moveTo(0, y * CFG.size + .5);
+                ctx.lineTo(w, y * CFG.size + .5);
+            }
+            ctx.stroke();
+        }
+
+        function tick(t) {
+            var dt = Math.min((t - last) / 1000, 0.1);
+            last = t;
+
+            for (var i = 0; i < cells.length; i++) {
+                if (cells[i] > 0) cells[i] = Math.max(0, cells[i] - dt * CFG.speed);
+            }
+
+            var sparks = Math.max(1, Math.round(cells.length * 0.004 * CFG.speed));
+            for (var s = 0; s < sparks; s++) {
+                if (Math.random() < 0.35) {
+                    cells[Math.floor(Math.random() * cells.length)] = 0.4 + Math.random() * 0.6;
+                }
+            }
+
+            draw();
+            raf = requestAnimationFrame(tick);
+        }
+
+        function start() {
+            if (reduce || raf) return;
+            last = performance.now();
+            raf = requestAnimationFrame(tick);
+        }
+
+        function stop() {
+            if (raf) cancelAnimationFrame(raf);
+            raf = null;
+        }
+
+        resize();
+        window.addEventListener("resize", resize);
+
+        if ("IntersectionObserver" in window) {
+            new IntersectionObserver(function (entries) {
+                entries[0].isIntersecting ? start() : stop();
+            }).observe(canvas.parentElement);
+        } else {
+            start();
+        }
+    })();
+</script>

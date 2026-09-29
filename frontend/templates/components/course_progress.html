@@ -10,5 +10,5 @@
     </div>
 
     <p>6 de 9 aulas concluídas</p>
-    <a class="btn btn-primary" href="#continue-card">Continuar estudando →</a>
+    <a class="btn btn-primary" href="{% if current_module.number %}{% url 'core:player' current_module.number 1 %}{% else %}#modules-title{% endif %}">Continuar estudando →</a>
 </article>

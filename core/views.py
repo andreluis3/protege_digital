@@ -1,5 +1,8 @@
+from django.http import Http404
 from django.shortcuts import render
-
+from django.http import Http404
+from django.shortcuts import render
+from .course_data import get_module
 
 # =============================================================
 # DADOS DO CURSO
@@ -92,17 +95,16 @@ COURSE_MODULES = [
         "next_lesson": None,
     },
     {
-        "number": "07",
-        "slug": "desafio-final",
-        "icon": "assets/resources/icons/award.png",
+        "number": 7,
         "title": "Desafio Final",
-        "description": "Teste seus conhecimentos e coloque em prática o que aprendeu.",
-        "lessons": 1,
-        "progress": 0,
+        "description": "Avaliação de 10 questões valendo certificado.",
+        "icon": "assets/resources/icons/protected.png",
         "status": "locked",
-        "status_label": "Bloqueado",
-        "next_lesson": None,
-    },
+        "status_label": "Em breve",
+        "lessons": 0,
+        "progress": 0,
+        "slug": "desafio-final",
+    }
 ]
 
 
@@ -163,3 +165,28 @@ def curso(request):
             "stats": _course_stats(modules),
         },
     )
+    
+
+def player(request, module_number, lesson_number=1):
+    module = get_module(module_number)
+    if not module or module.get("final"):
+        raise Http404
+
+    lessons = module["lessons"] or [{
+        "title": "Aulas em breve",
+        "summary": "As videoaulas deste módulo serão publicadas em breve.",
+        "video": "",
+        "pdf": "",
+    }]
+
+    if not 1 <= lesson_number <= len(lessons):
+        raise Http404
+
+    return render(request, "core/player.html", {
+        "module": module,
+        "lessons": lessons,
+        "lesson": lessons[lesson_number - 1],
+        "lesson_number": lesson_number,
+        "prev_number": lesson_number - 1 if lesson_number > 1 else None,
+        "next_number": lesson_number + 1 if lesson_number < len(lessons) else None,
+    })

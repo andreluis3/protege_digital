@@ -1,13 +1,336 @@
 {% extends "base.html" %}
 
-{% block title %}O Projeto - Protege Digital{% endblock %}
+{% block title %}O Projeto - Proteção Digital{% endblock %}
 
 {% block content %}
-<section class="section page-placeholder">
-    <div class="container narrow">
-        <p class="eyebrow">Página institucional</p>
-        <h1>O projeto</h1>
-        <p>Esta página está preparada para receber informações completas sobre o Proteção Digital em uma próxima etapa.</p>
+<style>
+    .sb-page {
+        position: relative;
+        overflow: hidden;
+        padding: 96px 0 104px;
+        color: #e2e8f0;
+        background:
+            radial-gradient(circle at 15% 0%, rgba(37, 99, 235, .22), transparent 45%),
+            radial-gradient(circle at 90% 60%, rgba(59, 130, 246, .12), transparent 45%),
+            linear-gradient(180deg, #000 0%, #0b132b 100%);
+    }
+
+    .sb-page::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(rgba(30, 41, 59, .35) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(30, 41, 59, .35) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+        -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+    }
+
+    .sb-wrap {
+        position: relative;
+        z-index: 1;
+        width: min(980px, 92%);
+        margin: 0 auto;
+    }
+
+    .sb-header {
+        text-align: center;
+        margin-bottom: 64px;
+    }
+
+    .sb-badge {
+        display: inline-block;
+        margin: 0 0 22px;
+        padding: 8px 16px;
+        border: 1px solid rgba(59, 130, 246, .5);
+        border-radius: 999px;
+        background: rgba(37, 99, 235, .12);
+        color: #60a5fa;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        text-shadow: 0 0 12px rgba(59, 130, 246, .7);
+        box-shadow: 0 0 18px rgba(37, 99, 235, .25);
+    }
+
+    .sb-title {
+        margin: 0 0 20px;
+        font-size: clamp(2.4rem, 6vw, 4.2rem);
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -.02em;
+        background: linear-gradient(90deg, #fff 0%, #dbeafe 45%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .sb-subtitle {
+        margin: 0 auto;
+        max-width: 42ch;
+        font-size: clamp(1.1rem, 2vw, 1.4rem);
+        line-height: 1.45;
+        color: #94a3b8;
+    }
+
+    .sb-manifesto {
+        position: relative;
+        margin-bottom: 32px;
+        padding: 40px 44px;
+        border: 1px solid rgba(148, 163, 184, .18);
+        border-left: 4px solid #3b82f6;
+        border-radius: 20px;
+        background: rgba(15, 23, 42, .65);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+    }
+
+    .sb-label {
+        display: inline-block;
+        margin: 0 0 14px;
+        color: #60a5fa;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+
+    .sb-manifesto h2 {
+        margin: 0 0 20px;
+        font-size: clamp(1.5rem, 3vw, 2.1rem);
+        line-height: 1.2;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .sb-manifesto p {
+        margin: 0 0 16px;
+        font-size: 1.05rem;
+        line-height: 1.75;
+        color: #cbd5e1;
+    }
+
+    .sb-manifesto p:last-child { margin-bottom: 0; }
+
+    .sb-manifesto strong { color: #fff; }
+
+    .sb-audience {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin: 28px 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .sb-audience li {
+        padding: 18px 20px;
+        border: 1px solid rgba(59, 130, 246, .28);
+        border-radius: 14px;
+        background: rgba(37, 99, 235, .1);
+        color: #e2e8f0;
+        font-size: .95rem;
+        font-weight: 600;
+        line-height: 1.45;
+    }
+
+    .sb-audience li span {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+    }
+
+    .sb-highlight {
+        margin: 24px 0 0;
+        padding: 18px 22px;
+        border-radius: 12px;
+        background: rgba(37, 99, 235, .16);
+        border: 1px solid rgba(59, 130, 246, .35);
+        color: #fff;
+        font-weight: 600;
+        line-height: 1.6;
+    }
+
+    .sb-ods {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 32px;
+        align-items: center;
+        padding: 40px 44px;
+        border: 1px solid rgba(59, 130, 246, .45);
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at 0% 0%, rgba(37, 99, 235, .3), transparent 55%),
+            rgba(11, 19, 43, .9);
+        box-shadow: 0 0 40px rgba(37, 99, 235, .25), 0 20px 50px rgba(0, 0, 0, .45);
+    }
+
+    .sb-ods-number {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 130px;
+        height: 130px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+        box-shadow: 0 0 32px rgba(59, 130, 246, .6);
+        color: #fff;
+        text-align: center;
+    }
+
+    .sb-ods-number small {
+        font-size: .7rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+    }
+
+    .sb-ods-number strong {
+        font-size: 3.2rem;
+        line-height: 1;
+        font-weight: 800;
+    }
+
+    .sb-ods h2 {
+        margin: 0 0 6px;
+        font-size: clamp(1.4rem, 3vw, 1.9rem);
+        line-height: 1.2;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .sb-ods-tag {
+        margin: 0 0 16px;
+        color: #60a5fa;
+        font-weight: 700;
+        text-shadow: 0 0 12px rgba(59, 130, 246, .6);
+    }
+
+    .sb-ods p {
+        margin: 0 0 14px;
+        font-size: 1.02rem;
+        line-height: 1.75;
+        color: #cbd5e1;
+    }
+
+    .sb-ods p:last-child { margin-bottom: 0; }
+
+    .sb-cta {
+        margin-top: 48px;
+        text-align: center;
+    }
+
+    .sb-cta p {
+        margin: 0 0 20px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #f1f5f9;
+    }
+
+    .sb-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 30px;
+        border-radius: 12px;
+        background: #2563eb;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 0 24px rgba(37, 99, 235, .55);
+        transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .sb-btn:hover {
+        transform: translateY(-2px);
+        background: #3b82f6;
+        box-shadow: 0 0 32px rgba(59, 130, 246, .75);
+    }
+
+    @media (max-width: 800px) {
+        .sb-page { padding: 72px 0 80px; }
+        .sb-manifesto,
+        .sb-ods { padding: 28px 24px; }
+        .sb-audience { grid-template-columns: 1fr; }
+        .sb-ods {
+            grid-template-columns: 1fr;
+            justify-items: start;
+        }
+        .sb-ods-number { width: 100px; height: 100px; }
+        .sb-ods-number strong { font-size: 2.4rem; }
+    }
+</style>
+
+<section class="sb-page">
+    <div class="sb-wrap">
+
+        <header class="sb-header">
+            <p class="sb-badge">Projeto de extensão universitária</p>
+            <h1 class="sb-title">O Projeto Proteção Digital</h1>
+            <p class="sb-subtitle">Educação contínua e acessível para enfrentar a evolução dos golpes digitais.</p>
+        </header>
+
+        <article class="sb-manifesto">
+            <span class="sb-label">Nossa missão</span>
+            <h2>Conhecimento é a primeira barreira contra os golpes.</h2>
+
+            <p>
+                A plataforma <strong>Proteção Digital</strong> foi criada para ajudar quem já caiu
+                em golpes, quem presenciou tentativas suspeitas na internet e quem quer aprender
+                a se proteger no mundo digital, de forma simples, gratuita e sem termos complicados.
+            </p>
+
+            <ul class="sb-audience">
+                <li><span aria-hidden="true">💔</span>Pessoas que já foram vítimas de golpes</li>
+                <li><span aria-hidden="true">👀</span>Pessoas que presenciaram tentativas suspeitas</li>
+                <li><span aria-hidden="true">🎓</span>Pessoas que querem aprender sobre segurança digital</li>
+            </ul>
+
+            <p>
+                Os criminosos cibernéticos estão cada vez mais espertos e criativos: mudam de
+                estratégia, imitam empresas, bancos e até pessoas próximas. Por isso, aprender
+                uma vez não basta.
+            </p>
+
+            <p class="sb-highlight">
+                Estudar e praticar a prevenção de forma contínua é fundamental para acompanhar
+                a evolução dos golpes.
+            </p>
+        </article>
+
+        <article class="sb-ods">
+            <div class="sb-ods-number" aria-hidden="true">
+                <small>ODS</small>
+                <strong>10</strong>
+            </div>
+
+            <div>
+                <span class="sb-label">Impacto social</span>
+                <h2>Alinhado à ODS 10: Redução das Desigualdades</h2>
+                <p class="sb-ods-tag">Inclusão digital e segurança da informação</p>
+
+                <p>
+                    A inclusão digital só é completa quando garante também a proteção e a
+                    segurança de todos os usuários. Não basta ter acesso à tecnologia: é preciso
+                    saber usá-la com segurança.
+                </p>
+                <p>
+                    Ao levar conhecimento gratuito e acessível, o projeto ajuda a prevenir perdas
+                    financeiras e vulnerabilidades virtuais, principalmente entre as pessoas que
+                    têm menos acesso à informação sobre esses riscos.
+                </p>
+            </div>
+        </article>
+
+        <div class="sb-cta">
+            <p>Antes de clicar, pense. Antes de confiar, verifique.</p>
+            <a class="sb-btn" href="{% url 'core:curso' %}">Começar minha jornada</a>
+        </div>
+
     </div>
 </section>
 {% endblock %}
