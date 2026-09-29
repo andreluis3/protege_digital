@@ -1,110 +1,164 @@
 {% load static %}
+<style>
+    .tg-section {
+        padding: 80px 0;
+    }
 
-<section
-    class="section threat-gallery-section"
-    aria-labelledby="threat-gallery-title"
->
+    .tg-wrap {
+        width: min(1100px, 92%);
+        margin: 0 auto;
+    }
 
-    <div class="container">
+    .tg-heading {
+        max-width: 720px;
+        margin: 0 auto 48px;
+        text-align: center;
+    }
 
-        {% include "components/section_title.html"
-            with eyebrow="Galeria de ameaças"
-            title="Reconheça os golpes antes que aconteçam"
-            description="Todos os dias, milhares de pessoas recebem mensagens falsas tentando roubar dinheiro ou informações pessoais. Aprenda a identificar os sinais de alerta."
-        %}
+    .tg-heading h2 {
+        margin: 8px 0 16px;
+    }
 
-        {# ==========================================================
-           Cada <figure> abaixo é um espaço preparado para receber um
-           print realista de celular (golpe correspondente). As imagens
-           ficam em static/assets/resources/prints_golpes/. Para trocar,
-           basta substituir o arquivo mantendo o mesmo nome, ou ajustar
-           o caminho no atributo src.
-        ========================================================== #}
+    .tg-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+    }
 
-        <div class="threat-gallery">
+    .tg-card {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #0f172a;
+        border: 1px solid rgba(148, 163, 184, .2);
+        box-shadow: 0 10px 30px rgba(2, 6, 23, .3);
+        transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
 
-            <figure class="threat-frame" data-threat="familiar-falso">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/pix_zap.png' %}"
-                        alt="Print simulando golpe do falso familiar pedindo PIX no WhatsApp"
-                        loading="lazy"
-                    >
+    .tg-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(96, 165, 250, .5);
+        box-shadow: 0 18px 40px rgba(2, 6, 23, .5);
+    }
+
+    .tg-media {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 3 / 4;
+        padding: 16px;
+        background: #111c33;
+    }
+
+    .tg-media img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 12px;
+    }
+
+    .tg-card figcaption {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 16px 20px 20px;
+        border-top: 1px solid rgba(148, 163, 184, .15);
+    }
+
+    .tg-card figcaption strong {
+        color: #f1f5f9;
+        font-size: 1rem;
+    }
+
+    .tg-card figcaption span {
+        color: #94a3b8;
+        font-size: .9rem;
+        line-height: 1.4;
+    }
+
+    @media (max-width: 900px) {
+        .tg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+        .tg-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<section class="tg-section" aria-labelledby="gallery-title">
+    <div class="tg-wrap">
+
+        <div class="tg-heading">
+            <p class="eyebrow">Galeria de ameaças</p>
+            <h2 id="gallery-title">Reconheça os golpes antes que aconteçam</h2>
+            <p>Todos os dias, milhares de pessoas recebem mensagens falsas tentando roubar dinheiro ou informações pessoais. Aprenda a identificar os sinais de alerta.</p>
+        </div>
+
+        <div class="tg-grid">
+
+            <figure class="tg-card">
+                <div class="tg-media">
+                    <img src="{% static 'assets/resources/prints_golpes/pix_mae.png' %}" alt="Print simulando golpe do falso familiar pedindo PIX no WhatsApp" loading="lazy">
                 </div>
+                <figcaption>
+                    <strong>Golpe do falso familiar</strong>
+                    <span>Pedido de PIX por WhatsApp com número novo.</span>
+                </figcaption>
             </figure>
 
-            <figure class="threat-frame" data-threat="phishing-bancario">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/golpe_banco.png' %}"
-                        alt="Print simulando e-mail ou mensagem de phishing bancário"
-                        loading="lazy"
-                    >
+            <figure class="tg-card">
+                <div class="tg-media">
+                    <img src="{% static 'assets/resources/prints_golpes/golpe_banco.png' %}" alt="Print simulando notificação falsa de banco" loading="lazy">
                 </div>
+                <figcaption>
+                    <strong>Falso aviso do banco</strong>
+                    <span>Mensagem urgente pedindo para atualizar o cadastro.</span>
+                </figcaption>
             </figure>
 
-            <figure class="threat-frame" data-threat="premio-falso">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/premio-falso.png' %}"
-                        alt="Print simulando mensagem de prêmio falso"
-                        loading="lazy"
-                    >
+            <figure class="tg-card">
+                <div class="tg-media">
+                    <img src="{% static 'assets/resources/prints_golpes/premio-falso.png' %}" alt="Print simulando prêmio falso de supermercado" loading="lazy">
                 </div>
+                <figcaption>
+                    <strong>Prêmio falso</strong>
+                    <span>Vale-compras que exige pagamento de uma taxa.</span>
+                </figcaption>
             </figure>
 
-            <figure class="threat-frame" data-threat="vaga-emprego-falsa">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/vaga-emprego-falsa.png' %}"
-                        alt="Print simulando falsa oportunidade de emprego"
-                        loading="lazy"
-                    >
+            <figure class="tg-card">
+                <div class="tg-media">
+                    <img src="{% static 'assets/resources/prints_golpes/central-cartao-falsa.png' %}" alt="Print simulando falsa central de cartão" loading="lazy">
                 </div>
+                <figcaption>
+                    <strong>Falsa central do cartão</strong>
+                    <span>Contato que pede dados e senhas do seu cartão.</span>
+                </figcaption>
             </figure>
 
-            <figure class="threat-frame" data-threat="central-cartao-falsa">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/central-cartao-falsa.png' %}"
-                        alt="Print simulando ligação de falsa central de cartão"
-                        loading="lazy"
-                    >
+            <figure class="tg-card">
+                <div class="tg-media">
+                    <img src="{% static 'assets/resources/prints_golpes/fake_sale.png' %}" alt="Print simulando promoção falsa" loading="lazy">
                 </div>
+                <figcaption>
+                    <strong>Promoção falsa</strong>
+                    <span>Oferta boa demais para ser verdade.</span>
+                </figcaption>
             </figure>
 
-            <figure class="threat-frame" data-threat="loja-falsa-desconto">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/loja-falsa-desconto.png' %}"
-                        alt="Print simulando loja falsa com desconto agressivo"
-                        loading="lazy"
-                    >
+            <figure class="tg-card">
+                <div class="tg-media">
+                    <img src="{% static 'assets/resources/prints_golpes/falso_emprego.png' %}" alt="Print simulando falsa oportunidade de emprego" loading="lazy">
                 </div>
-            </figure>
-
-            <figure class="threat-frame" data-threat="entrega-falsa">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/entrega-falsa.png' %}"
-                        alt="Print simulando golpe da falsa entrega"
-                        loading="lazy"
-                    >
-                </div>
-            </figure>
-
-            <figure class="threat-frame" data-threat="credenciais-corporativas">
-                <div class="threat-frame__screen">
-                    <img
-                        src="{% static 'assets/resources/prints_golpes/credenciais-corporativas.png' %}"
-                        alt="Print simulando roubo de credenciais corporativas"
-                        loading="lazy"
-                    >
-                </div>
+                <figcaption>
+                    <strong>Falsa oportunidade de emprego</strong>
+                    <span>Vaga fácil que pede dinheiro ou dados pessoais.</span>
+                </figcaption>
             </figure>
 
         </div>
-
     </div>
-
 </section>
