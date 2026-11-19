@@ -151,6 +151,19 @@
     text-align: center;
 }
 
+.field-error,
+.form-errors {
+    color: #b91c1c;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.form-errors {
+    padding: .8rem 1rem;
+    border-radius: var(--radius-sm);
+    background: #fef2f2;
+}
+
 @media (max-width: 520px) {
     .login-page {
         align-items: start;

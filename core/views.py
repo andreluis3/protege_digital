@@ -1,7 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
-from django.http import Http404
-from django.shortcuts import render
+
 from .course_data import get_module
 
 # =============================================================
@@ -152,6 +152,7 @@ def sobre(request):
     return render(request, "core/sobre.html")
 
 
+@login_required
 def curso(request):
     modules = _with_computed_fields(COURSE_MODULES)
     current_module = modules[0]
@@ -163,10 +164,12 @@ def curso(request):
             "modules": modules,
             "current_module": current_module,
             "stats": _course_stats(modules),
+            "display_name": request.user.get_full_name() or request.user.email,
         },
     )
     
 
+@login_required
 def player(request, module_number, lesson_number=1):
     module = get_module(module_number)
     if not module or module.get("final"):

@@ -97,6 +97,33 @@
     gap: var(--space-3);
 }
 
+.nav-logout {
+    margin: 0;
+}
+
+.nav-logout .nav-login {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+}
+
+.flash-messages {
+    position: relative;
+    z-index: 51;
+    padding-top: var(--space-3);
+}
+
+.flash-message {
+    padding: .8rem 1rem;
+    border-radius: var(--radius-md);
+    background: #dcfce7;
+    color: #166534;
+    font-weight: 700;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;

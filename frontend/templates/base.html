@@ -75,6 +75,8 @@
         {% include "components/navbar.html" %}
     {% endblock %}
 
+    {% if messages %}<div class="flash-messages container" aria-live="polite">{% for message in messages %}<div class="flash-message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+
     <main id="conteudo">
         {% block content %}{% endblock %}
     </main>

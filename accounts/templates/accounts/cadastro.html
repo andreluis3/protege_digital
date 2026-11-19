@@ -1,13 +1,28 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Cadastro - Protege Digital{% endblock %}
 
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts.css' %}">{% endblock %}
+
 {% block content %}
-<section class="section page-placeholder">
-    <div class="container narrow">
-        <p class="eyebrow">Acesso futuro</p>
-        <h1>Cadastro</h1>
-        <p>O cadastro de usuários será implementado em uma próxima etapa.</p>
+<section class="login-page section" aria-labelledby="signup-title">
+    <div class="container login-container">
+        <div class="login-heading">
+            <a class="login-brand" href="{% url 'core:home' %}" aria-label="Proteção Digital - Início"><img class="brand-mark" src="{% static 'assets/resources/icons/shield_logo.png' %}" alt="" aria-hidden="true"><span>Proteção Digital</span></a>
+            <h1 id="signup-title">Crie sua conta</h1><p>Comece sua jornada de aprendizado em segurança digital.</p>
+        </div>
+        <form class="login-card" action="{% url 'accounts:cadastro' %}" method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+            <div class="form-field"><label for="{{ form.full_name.id_for_label }}">Nome completo</label><input id="{{ form.full_name.id_for_label }}" name="full_name" type="text" autocomplete="name" value="{{ form.full_name.value|default_if_none:'' }}" required>{% for error in form.full_name.errors %}<span class="field-error">{{ error }}</span>{% endfor %}</div>
+            <div class="form-field"><label for="{{ form.email.id_for_label }}">E-mail</label><input id="{{ form.email.id_for_label }}" name="email" type="email" autocomplete="email" value="{{ form.email.value|default_if_none:'' }}" required>{% for error in form.email.errors %}<span class="field-error">{{ error }}</span>{% endfor %}</div>
+            <div class="form-field"><label for="{{ form.password.id_for_label }}">Senha</label><div class="password-field"><input id="{{ form.password.id_for_label }}" name="password" type="password" autocomplete="new-password" required><button class="password-toggle" type="button" aria-label="Mostrar ou ocultar senha" data-password-toggle>Mostrar</button></div>{% for error in form.password.errors %}<span class="field-error">{{ error }}</span>{% endfor %}</div>
+            <div class="form-field"><label for="{{ form.password_confirmation.id_for_label }}">Confirme sua senha</label><div class="password-field"><input id="{{ form.password_confirmation.id_for_label }}" name="password_confirmation" type="password" autocomplete="new-password" required><button class="password-toggle" type="button" aria-label="Mostrar ou ocultar senha" data-password-toggle>Mostrar</button></div>{% for error in form.password_confirmation.errors %}<span class="field-error">{{ error }}</span>{% endfor %}</div>
+            <button class="btn btn-primary login-submit" type="submit">Criar conta</button>
+            <div class="signup-callout"><p>Já tem uma conta?</p><a href="{% url 'accounts:login' %}">Entrar</a></div>
+        </form>
+        <a class="back-home" href="{% url 'core:home' %}">← Voltar para o início</a>
     </div>
 </section>
 {% endblock %}

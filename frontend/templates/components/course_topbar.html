@@ -11,10 +11,10 @@
     </a>
 
     <div class="course-user-actions">
-        <span class="course-user" aria-label="Usuário visual atual">André</span>
+        <span class="course-user" aria-label="Usuário autenticado">{{ display_name|default:user.email }}</span>
         <button class="theme-toggle" type="button" aria-label="Alternar tema" data-theme-toggle>
             <span class="theme-toggle-icon" aria-hidden="true" data-theme-icon>🌙</span>
         </button>
-        <a class="btn btn-secondary btn-small" href="{% url 'core:home' %}">Sair</a>
+        <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="btn btn-secondary btn-small" type="submit">Sair</button></form>
     </div>
 </header>

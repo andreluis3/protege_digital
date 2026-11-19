@@ -21,11 +21,18 @@
             <ul class="nav-links">
                 <li><a href="{% url 'core:home' %}">Início</a></li>
                 <li><a href="{% url 'core:sobre' %}">O projeto</a></li>
-                <li><a href="{% url 'core:curso' %}">O curso</a></li>
+                {% if user.is_authenticated %}<li><a href="{% url 'core:curso' %}">Meu curso</a></li>{% endif %}
             </ul>
 
             <div class="nav-actions">
-                <a class="nav-login" href="{% url 'accounts:login' %}">Entrar</a>
+                {% if user.is_authenticated %}
+                    <span class="nav-login">{{ user.get_full_name|default:user.email }}</span>
+                    <a class="nav-login" href="{% url 'core:curso' %}">Meu curso</a>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="nav-logout">{% csrf_token %}<button class="nav-login" type="submit">Sair</button></form>
+                {% else %}
+                    <a class="nav-login" href="{% url 'accounts:login' %}">Entrar</a>
+                    <a class="nav-login" href="{% url 'accounts:cadastro' %}">Cadastrar</a>
+                {% endif %}
                 <button class="theme-toggle" type="button" aria-label="Alternar tema" data-theme-toggle>
                     <span class="theme-toggle-icon" aria-hidden="true" data-theme-icon>🌙</span>
                 </button>
