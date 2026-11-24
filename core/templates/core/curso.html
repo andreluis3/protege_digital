@@ -46,7 +46,7 @@
 
             <div class="course-dashboard">
 
-                {% include "components/course_progress.html" with current_module=current_module %}
+                {% include "components/course_progress.html" with current_module=current_module overall_progress=overall_progress completed_lessons=completed_lessons total_lessons=stats.total_lessons %}
 
                 {% include "components/course_continue_card.html" with current_module=current_module %}
 
@@ -74,7 +74,7 @@
                             id="module-{{ module.number }}"
                         >
 
-                            <div class="course-module__number">{{ module.number }}</div>
+                            <div class="course-module__number">{{ module.number|stringformat:"02d" }}</div>
 
                             <div class="course-module__icon">
                                 <img src="{% static module.icon %}" alt="" loading="lazy">
@@ -84,7 +84,7 @@
 
                                 <div class="course-module__top">
                                     <div>
-                                        <span class="course-module__label">Módulo {{ module.number }}</span>
+                                        <span class="course-module__label">Módulo {{ module.number|stringformat:"02d" }}</span>
                                         <h3>{{ module.title }}</h3>
                                         <p>{{ module.description }}</p>
                                     </div>
@@ -95,7 +95,7 @@
                                 <div class="course-module__bottom">
                                     <div class="course-module__progress">
                                         <div class="course-module__meta">
-                                            <span>{{ module.lessons }} aulas</span>
+                                            <span>{{ module.lessons }} {% if module.lessons == 1 %}aula{% else %}aulas{% endif %}</span>
                                             <span>{{ module.progress }}%</span>
                                         </div>
 
@@ -114,10 +114,10 @@
                                         </div>
                                     </div>
 
-                                    {% if module.number == 7 %}
-                                        <button type="button" class="course-module__action" disabled>
-                                            Em breve
-                                        </button>
+                                    {% if module.number == 7 and module.status == "available" %}
+                                        <a href="{% url 'quiz:index' %}" class="course-module__action">
+                                            Iniciar desafio <span aria-hidden="true">→</span>
+                                        </a>
                                     {% elif module.status == "locked" %}
                                         <button type="button" class="course-module__action" disabled>
                                             Bloqueado

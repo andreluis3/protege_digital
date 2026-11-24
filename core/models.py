@@ -105,3 +105,23 @@ class LessonProgress(models.Model):
         if not self.completed_at:
             self.completed_at = timezone.now()
         self.save(update_fields=("completed", "completed_at", "updated_at"))
+
+
+class CourseLessonProgress(models.Model):
+    """Progresso de uma aula por aluno, persistido no banco do Django."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="course_lesson_progress")
+    module_number = models.PositiveSmallIntegerField()
+    lesson_number = models.PositiveSmallIntegerField(default=1)
+    started_at = models.DateTimeField(default=timezone.now)
+    completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=("user", "module_number", "lesson_number"), name="unique_course_lesson_progress"),
+        ]
+        ordering = ("module_number", "lesson_number")
+
+    def __str__(self):
+        return f"{self.user} · Módulo {self.module_number} · Aula {self.lesson_number}"

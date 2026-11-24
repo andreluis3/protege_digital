@@ -24,7 +24,7 @@
             {% for module in modules %}
                 <li>
                     <a class="{% if module.number == current_module.number %}is-active{% endif %}" href="#module-{{ module.number }}">
-                        <span>{{ module.number }}</span>
+                        <span>{{ module.number|stringformat:"02d" }}</span>
                         <strong>{{ module.title }}</strong>
                     </a>
                 </li>

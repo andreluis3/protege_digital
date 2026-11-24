@@ -1,13 +1,18 @@
 {% extends "base.html" %}
-
-{% block title %}Quiz - Protege Digital{% endblock %}
-
+{% block title %}Desafio Final - Protege Digital{% endblock %}
+{% block extra_css %}
+<style>
+.quiz-page{min-height:80vh;background:#0b1020;color:#e5e7eb;padding:42px 16px 72px}.quiz-wrap{max-width:900px;margin:auto}.quiz-kicker{color:#60a5fa;font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.quiz-head h1{font-size:clamp(2rem,5vw,3rem);margin:8px 0;color:#fff}.quiz-head p{color:#aab7cc;line-height:1.7}.quiz-progress{padding:16px 20px;border:1px solid #334155;background:#111827;border-radius:14px;margin:24px 0}.quiz-question{padding:22px;margin:16px 0;border:1px solid #29364d;border-radius:16px;background:#111827}.quiz-question h2{font-size:1.05rem;line-height:1.55;margin:0 0 16px;color:#f8fafc}.quiz-option{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;margin:9px 0;border:1px solid #344256;border-radius:11px;cursor:pointer;line-height:1.5}.quiz-option:hover{border-color:#3b82f6;background:#17243a}.quiz-option input{margin-top:4px;accent-color:#3b82f6}.quiz-submit{border:0;border-radius:11px;padding:14px 22px;background:#347df3;color:white;font-weight:800;font-size:1rem;cursor:pointer}.quiz-submit:hover{background:#2563eb}.quiz-note{color:#9caec5;font-size:.9rem}.quiz-number{color:#60a5fa;font-weight:800;margin-right:8px}@media(max-width:600px){.quiz-page{padding:28px 12px 50px}.quiz-question{padding:16px}.quiz-option{padding:11px}}
+</style>
+{% endblock %}
 {% block content %}
-<section class="section page-placeholder">
-    <div class="container narrow">
-        <p class="eyebrow">Avaliações futuras</p>
-        <h1>Quiz</h1>
-        <p>Os quizzes serão implementados futuramente para apoiar a aprendizagem.</p>
-    </div>
-</section>
+<section class="quiz-page"><div class="quiz-wrap">
+<header class="quiz-head"><span class="quiz-kicker">Módulo 07 · Avaliação final</span><h1>Desafio Protege Digital</h1><p>Responda às 10 questões para revisar os principais temas do curso. Você precisa acertar pelo menos 8 questões para conquistar seu certificado.</p></header>
+<div class="quiz-progress"><strong>10 questões</strong><span class="quiz-note"> · Nota mínima: 8/10 · Uma alternativa por questão</span></div>
+<form method="post">{% csrf_token %}
+{% for question in questions %}<fieldset class="quiz-question"><legend style="display:none">Questão {{ forloop.counter }}</legend><h2><span class="quiz-number">{{ forloop.counter|stringformat:"02d" }}.</span>{{ question.text }}</h2>
+{% for value,label in question.options %}<label class="quiz-option"><input type="radio" name="{{ question.id }}" value="{{ value }}" required><span>{{ label }}</span></label>{% endfor %}
+</fieldset>{% endfor %}
+<button class="quiz-submit" type="submit">Finalizar avaliação</button><p class="quiz-note">Confira suas respostas antes de finalizar. O resultado será calculado automaticamente.</p>
+</form></div></section>
 {% endblock %}

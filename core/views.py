@@ -1,151 +1,62 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 
-from .course_data import get_module
-
-# =============================================================
-# DADOS DO CURSO
-# =============================================================
-#
-# Nesta etapa os módulos ainda são dados estáticos (sem model
-# no banco). O formato já foi pensado para migrar depois para um
-# app "learning" com models (Modulo, Aula, Progresso, Certificado)
-# sem precisar mudar os templates: cada módulo carrega um "slug"
-# (para futuras URLs de aula, ex: /curso/fundamentos-da-seguranca/)
-# e um "next_lesson" (para a próxima aula sugerida na retomada).
-# =============================================================
-
-COURSE_MODULES = [
-    {
-        "number": "01",
-        "slug": "fundamentos-da-seguranca-digital",
-        "icon": "assets/resources/icons/shield_logo.png",
-        "title": "Fundamentos da Segurança Digital",
-        "description": "Aprenda os conceitos básicos para começar a se proteger no mundo digital.",
-        "lessons": 3,
-        "progress": 60,
-        "status": "in-progress",
-        "status_label": "Em andamento",
-        # Aula sugerida ao retomar o curso (usada no "continue-card").
-        # Quando existir um model de Aula, isso vira uma FK/consulta real.
-        "next_lesson": {
-            "number": 2,
-            "title": "Por que a segurança digital é importante?",
-        },
-    },
-    {
-        "number": "02",
-        "slug": "golpes-phishing-e-engenharia-social",
-        "icon": "assets/resources/icons/cyber-criminal.png",
-        "title": "Golpes, Phishing e Engenharia Social",
-        "description": "Aprenda a identificar golpes, mensagens falsas e tentativas de manipulação.",
-        "lessons": 4,
-        "progress": 0,
-        "status": "not-started",
-        "status_label": "Não iniciado",
-        "next_lesson": None,
-    },
-    {
-        "number": "03",
-        "slug": "senhas-e-protecao-de-contas",
-        "icon": "assets/resources/icons/password.png",
-        "title": "Senhas e Proteção de Contas",
-        "description": "Aprenda a criar senhas mais seguras e proteger suas contas.",
-        "lessons": 4,
-        "progress": 0,
-        "status": "not-started",
-        "status_label": "Não iniciado",
-        "next_lesson": None,
-    },
-    {
-        "number": "04",
-        "slug": "seguranca-no-celular-e-computador",
-        "icon": "assets/resources/icons/cellphone1.png",
-        "title": "Segurança no Celular e Computador",
-        "description": "Conheça práticas para manter seus dispositivos protegidos.",
-        "lessons": 4,
-        "progress": 0,
-        "status": "not-started",
-        "status_label": "Não iniciado",
-        "next_lesson": None,
-    },
-    {
-        "number": "05",
-        "slug": "privacidade-e-protecao-de-dados",
-        "icon": "assets/resources/icons/protected.png",
-        "title": "Privacidade e Proteção de Dados",
-        "description": "Entenda como cuidar melhor das suas informações pessoais.",
-        "lessons": 3,
-        "progress": 0,
-        "status": "not-started",
-        "status_label": "Não iniciado",
-        "next_lesson": None,
-    },
-    {
-        "number": "06",
-        "slug": "navegacao-segura",
-        "icon": "assets/resources/icons/websecurity.png",
-        "title": "Navegação Segura",
-        "description": "Aprenda a navegar pela internet de forma mais consciente e segura.",
-        "lessons": 3,
-        "progress": 0,
-        "status": "not-started",
-        "status_label": "Não iniciado",
-        "next_lesson": None,
-    },
-    {
-        "number": 7,
-        "title": "Desafio Final",
-        "description": "Avaliação de 10 questões valendo certificado.",
-        "icon": "assets/resources/icons/protected.png",
-        "status": "locked",
-        "status_label": "Em breve",
-        "lessons": 0,
-        "progress": 0,
-        "slug": "desafio-final",
-    }
-]
+from .course_data import MODULES, get_module
+from .models import CourseLessonProgress
 
 
-def _with_computed_fields(modules):
-    """
-    Preenche campos derivados que os templates usam, para não
-    duplicar essa conta em cada componente (aulas concluídas a
-    partir do progresso, por exemplo). Fonte única da verdade
-    continua sendo "progress".
-    """
-    enriched = []
-    for module in modules:
-        module = dict(module)
-        module["completed_lessons"] = round(
-            module["progress"] / 100 * module["lessons"]
-        )
-        enriched.append(module)
-    return enriched
+def _module_cards(user):
+    cards = []
+    for source in MODULES:
+        module = dict(source)
+        lessons = module.get("lessons", [])
+        total = len(lessons)
+        records = list(CourseLessonProgress.objects.filter(user=user, module_number=module["number"]))
+        completed = sum(1 for record in records if record.completed)
+        started = bool(records)
+        module["lessons"] = total
+        module["completed_lessons"] = completed
+        module["progress"] = round(completed * 100 / total) if total else 0
+        if module.get("final"):
+            required_modules = [m for m in MODULES if not m.get("final")]
+            ready = all(
+                len(m.get("lessons", [])) > 0
+                and CourseLessonProgress.objects.filter(
+                    user=user, module_number=m["number"], completed=True
+                ).count() >= len(m.get("lessons", []))
+                for m in required_modules
+            )
+            module["status"] = "available" if ready else "locked"
+            module["status_label"] = "Disponível" if ready else "Conclua as aulas"
+        elif total and completed == total:
+            module["status"] = "completed"
+            module["status_label"] = "Concluído"
+        elif started:
+            module["status"] = "in-progress"
+            module["status_label"] = "Em andamento"
+        else:
+            module["status"] = "not-started"
+            module["status_label"] = "Não iniciado"
+        module["next_lesson"] = next((i for i, lesson in enumerate(lessons, 1)
+                                      if not any(r.lesson_number == i and r.completed for r in records)), 1 if total else None)
+        cards.append(module)
+    return cards
 
 
 def _course_stats(modules):
-    total_modules = len(modules)
-    total_lessons = sum(module["lessons"] for module in modules)
-    in_progress = sum(1 for module in modules if module["status"] == "in-progress")
-    completed = sum(1 for module in modules if module["status"] == "completed")
+    content_modules = [m for m in modules if not m.get("final")]
     return {
-        "total_modules": total_modules,
-        "total_lessons": total_lessons,
-        "in_progress": in_progress,
-        "completed": completed,
+        "total_modules": len(modules),
+        "total_lessons": sum(m["lessons"] for m in content_modules),
+        "in_progress": sum(m["status"] == "in-progress" for m in content_modules),
+        "completed": sum(m["status"] == "completed" for m in content_modules),
     }
 
 
 def home(request):
-    return render(
-        request,
-        "core/home.html",
-        {
-            "modules": COURSE_MODULES,
-        },
-    )
+    return render(request, "core/home.html", {"modules": MODULES})
 
 
 def sobre(request):
@@ -154,37 +65,48 @@ def sobre(request):
 
 @login_required
 def curso(request):
-    modules = _with_computed_fields(COURSE_MODULES)
-    current_module = modules[0]
+    modules = _module_cards(request.user)
+    content_modules = [m for m in modules if not m.get("final")]
+    current_module = next((m for m in content_modules if m["status"] == "in-progress"), None)
+    if current_module is None:
+        current_module = next((m for m in content_modules if m["status"] != "completed"), content_modules[0])
+    total_lessons = sum(m["lessons"] for m in content_modules)
+    completed_lessons = sum(m["completed_lessons"] for m in content_modules)
+    overall_progress = round(completed_lessons * 100 / total_lessons) if total_lessons else 0
+    return render(request, "core/curso.html", {
+        "modules": modules,
+        "current_module": current_module,
+        "stats": _course_stats(modules),
+        "overall_progress": overall_progress,
+        "completed_lessons": completed_lessons,
+        "display_name": request.user.get_full_name() or request.user.email or request.user.get_username(),
+    })
 
-    return render(
-        request,
-        "core/curso.html",
-        {
-            "modules": modules,
-            "current_module": current_module,
-            "stats": _course_stats(modules),
-            "display_name": request.user.get_full_name() or request.user.email,
-        },
-    )
-    
 
 @login_required
 def player(request, module_number, lesson_number=1):
     module = get_module(module_number)
     if not module or module.get("final"):
         raise Http404
-
-    lessons = module["lessons"] or [{
-        "title": "Aulas em breve",
-        "summary": "As videoaulas deste módulo serão publicadas em breve.",
-        "video": "",
-        "pdf": "",
-    }]
-
+    lessons = module["lessons"]
     if not 1 <= lesson_number <= len(lessons):
         raise Http404
 
+    progress, _ = CourseLessonProgress.objects.get_or_create(
+        user=request.user,
+        module_number=module_number,
+        lesson_number=lesson_number,
+    )
+    if request.method == "POST" and request.POST.get("action") == "complete":
+        if not progress.completed:
+            progress.completed = True
+            progress.completed_at = timezone.now()
+            progress.save(update_fields=("completed", "completed_at", "updated_at"))
+        return redirect("core:player", module_number=module_number, lesson_number=lesson_number)
+
+    completed_count = CourseLessonProgress.objects.filter(
+        user=request.user, module_number=module_number, completed=True
+    ).count()
     return render(request, "core/player.html", {
         "module": module,
         "lessons": lessons,
@@ -192,4 +114,6 @@ def player(request, module_number, lesson_number=1):
         "lesson_number": lesson_number,
         "prev_number": lesson_number - 1 if lesson_number > 1 else None,
         "next_number": lesson_number + 1 if lesson_number < len(lessons) else None,
+        "lesson_completed": progress.completed,
+        "completed_count": completed_count,
     })

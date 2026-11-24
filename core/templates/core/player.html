@@ -14,7 +14,8 @@
     .pl-crumb { margin: 0 0 8px; color: #60a5fa; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
     .pl-title { margin: 0 0 16px; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; color: #fff; }
     .pl-video { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px; background: #050b1a; border: 1px solid rgba(59, 130, 246, .35); box-shadow: 0 0 40px rgba(37, 99, 235, .2); }
-    .pl-video video { width: 100%; height: 100%; display: block; background: #000; }
+    .pl-video video, .pl-video iframe { width: 100%; height: 100%; display: block; background: #000; border: 0; }
+    .pl-video iframe { position: absolute; inset: 0; }
     .pl-empty { display: grid; place-items: center; height: 100%; text-align: center; color: #94a3b8; padding: 24px; }
     .pl-hint { margin: 10px 0 0; color: #64748b; font-size: .8rem; }
     .pl-nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 28px; }
@@ -63,14 +64,20 @@
 
             <div class="pl-video">
                 {% if lesson.video %}
-                    <video id="pl-video" controls preload="metadata" playsinline>
-                        <source src="{% static lesson.video %}" type="video/mp4">
-                    </video>
+                    <iframe
+                        id="pl-youtube"
+                        src="{{ lesson.video }}"
+                        title="Vídeo da aula: {{ lesson.title }}"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                    ></iframe>
                 {% else %}
                     <div class="pl-empty"><p>Vídeo em breve.</p></div>
                 {% endif %}
             </div>
-            <p class="pl-hint">Atalhos: ← e → voltam/avançam 10s · Espaço play/pause · F tela cheia · M mudo</p>
+            <p class="pl-hint">Vídeo hospedado no YouTube. Utilize os controles do player para reproduzir, pausar e ativar a tela cheia.</p>
 
             <div class="pl-nav">
                 {% if prev_number %}
@@ -79,7 +86,11 @@
                     <span class="pl-btn is-disabled">← Aula anterior</span>
                 {% endif %}
 
-                <button class="pl-btn pl-btn-done" id="pl-done" type="button">Marcar como concluída</button>
+                <form method="post" class="pl-completion-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="complete">
+                    <button class="pl-btn pl-btn-done{% if lesson_completed %} is-done{% endif %}" id="pl-done" type="submit">{% if lesson_completed %}✓ Aula concluída{% else %}Marcar como concluída{% endif %}</button>
+                </form>
 
                 {% if next_number %}
                     <a class="pl-btn" href="{% url 'core:player' module.number next_number %}">Próxima aula →</a>
@@ -99,7 +110,7 @@
 
         <aside class="pl-side" aria-label="Aulas do módulo">
             <h2>Aulas do módulo</h2>
-            <p class="pl-progress" id="pl-progress"></p>
+            <p class="pl-progress">{{ completed_count }} de {{ lessons|length }} concluídas</p>
             <ol class="pl-list">
                 {% for l in lessons %}
                     <li>
@@ -108,7 +119,7 @@
                             data-lesson-item="{{ forloop.counter }}"
                             class="{% if forloop.counter == lesson_number %}is-current{% endif %}"
                         >
-                            <span class="pl-icon" aria-hidden="true">{% if forloop.counter == lesson_number %}▶{% else %}○{% endif %}</span>
+                            <span class="pl-icon" aria-hidden="true">{% if forloop.counter == lesson_number %}{% if lesson_completed %}✓{% else %}▶{% endif %}{% else %}○{% endif %}</span>
                             <span>{{ l.title }}</span>
                         </a>
                     </li>
@@ -118,112 +129,5 @@
 
     </div>
 </section>
-
-<div
-    id="pl-data"
-    hidden
-    data-module="{{ module.number }}"
-    data-current-lesson="{{ lesson_number }}"
-    data-total="{{ lessons|length }}"
-></div>
-
-<script>
-(function () {
-    var data = document.getElementById("pl-data").dataset;
-    var M = Number(data.module);
-    var L = Number(data.currentLesson);
-    var TOTAL = Number(data.total);
-    var KEY = "pd:progress";
-    var video = document.getElementById("pl-video");
-    var btn = document.getElementById("pl-done");
-
-    function load() {
-        try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
-    }
-
-    function save(d) {
-        try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
-    }
-
-    function id(n) { return "m" + M + "-l" + n; }
-
-    function render() {
-        var d = load();
-        var done = 0;
-
-        document.querySelectorAll("[data-lesson-item]").forEach(function (a) {
-            var n = Number(a.dataset.lessonItem);
-            var ok = d[id(n)] && d[id(n)].done;
-            var icon = a.querySelector(".pl-icon");
-            a.classList.toggle("is-done", !!ok);
-            if (ok) {
-                done++;
-                icon.textContent = "✓";
-            } else {
-                icon.textContent = (n === L) ? "▶" : "○";
-            }
-        });
-
-        document.getElementById("pl-progress").textContent = done + " de " + TOTAL + " concluídas";
-
-        var cur = d[id(L)] && d[id(L)].done;
-        btn.classList.toggle("is-done", !!cur);
-        btn.textContent = cur ? "✓ Aula concluída" : "Marcar como concluída";
-    }
-
-    function setDone(v) {
-        var d = load();
-        d[id(L)] = d[id(L)] || {};
-        d[id(L)].done = v;
-        save(d);
-        render();
-    }
-
-    btn.addEventListener("click", function () {
-        var d = load();
-        setDone(!(d[id(L)] && d[id(L)].done));
-    });
-
-    if (video) {
-        var last = 0;
-
-        video.addEventListener("loadedmetadata", function () {
-            var d = load();
-            var t = d[id(L)] && d[id(L)].time;
-            if (t && t < video.duration - 5) { video.currentTime = t; }
-        });
-
-        video.addEventListener("timeupdate", function () {
-            if (Date.now() - last < 4000) { return; }
-            last = Date.now();
-            var d = load();
-            d[id(L)] = d[id(L)] || {};
-            d[id(L)].time = video.currentTime;
-            save(d);
-        });
-
-        video.addEventListener("ended", function () { setDone(true); });
-
-        document.addEventListener("keydown", function (e) {
-            if (/INPUT|TEXTAREA/.test(e.target.tagName)) { return; }
-            var k = e.key.toLowerCase();
-            if (k === "arrowright") {
-                video.currentTime += 10;
-            } else if (k === "arrowleft") {
-                video.currentTime -= 10;
-            } else if (k === " ") {
-                e.preventDefault();
-                if (video.paused) { video.play(); } else { video.pause(); }
-            } else if (k === "f") {
-                if (document.fullscreenElement) { document.exitFullscreen(); } else { video.requestFullscreen(); }
-            } else if (k === "m") {
-                video.muted = !video.muted;
-            }
-        });
-    }
-
-    render();
-})();
-</script>
 
 {% endblock %}
